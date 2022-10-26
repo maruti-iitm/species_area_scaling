@@ -1,0 +1,128 @@
+Column_or_Row_Name,Unit,Definition,Data_Type,Term_Type
+File_Name,N/A,Name of the files in the data package,text,column_header 
+File_Description,N/A,A brief description of the files in the data package,text,column_header 
+Missing_Value_Codes,N/A,Missing value codes,text,column_header 
+Sample_ID,N/A,Sample ID where the replicates for sediment samples are: U is upstream; M is midstream; and D is downstream,text,column_header 
+slope_of_the_regression,milligrams_per_liter_per_minute,Slope of the regression calculated from the time series of oxygen measurements,numeric,column_header 
+rate_mg_per_L_per_min,milligrams_O2_per_liter_per_minute,Respiration rate ,numeric,column_header 
+rate_mg_per_L_per_h,milligrams_O2_per_liter_per_hour,Respiration rate ,numeric,column_header 
+R_squared,N/A,R2 of regression,numeric,column_header 
+R_squared_adj,N/A,Adjusted R2 of regression,numeric,column_header 
+p_value,N/A,P-value of regression,numeric,column_header 
+total_incubation_time_min,minutes,Total incubation time,numeric,column_header 
+Study_Code,N/A,WHONDRS Summer 2019 Sampling campaign code (WHONDRS_S19S),text,column_header 
+00681_NPOC_mg_per_L_as_C,milligrams_per_liter_as_carbon,Non-purgeable organic carbon (NPOC) from water extractions of sediment samples that were subsequently analyzed on the FTICR-MS.,numeric,column_header 
+Above_Range_Greater_Than_22,N/A,Non-purgeable organic carbon (NPOC) measurement was above 22 milligrams per liter (mg/L) which was the highest standard included on the run. Values listed that are higher than 22 mg/L were diluted before being run and then the final concentration was calculated based on the dilution. ,text,dataFlag
+Date,MM-DD-YYYY,Date of incubation,date,column_header 
+StartMeasureTime,hh:mm:ss AM/PM,Start time of laboratory incubation,time,column_header 
+StopMeasureTime,hh:mm:ss AM/PM,Stop time of laboratory incubation,time,column_header 
+M1_DO_mg_per_L,mg_per_liter,First measurement of dissolved oxygen in laboratory incubation,numeric,column_header 
+M2_DO_mg_per_L,mg_per_liter,Second measurement of dissolved oxygen in laboratory incubation,numeric,column_header 
+M3_DO_mg_per_L,mg_per_liter,Third measurement of dissolved oxygen in laboratory incubation,numeric,column_header 
+AVG_DO_mg_per_L,mg_per_liter,Average of measurements of dissolved oxygen in laboratory incubation,numeric,column_header 
+Temperature_degreesC,degrees_celsius,Temperature,numeric,column_header 
+methodName,N/A,Name of method code category,text,column_header 
+methodID,N/A,Alphanumeric ID associated with method code,text,column_header 
+methodDescription,N/A,Description of method code,text,column_header 
+Start_Time,hh:mm,Start time of sediment collection (24hr local time),time,column_header 
+Time_zone,N/A,Local time zone,text,column_header 
+Sampler_Organization,N/A,Organization of person who collected the sample,text,column_header 
+Associated_Site,N/A,Name of associated site where sample was collected,text,column_header 
+Sampler_Name,N/A,Name of person who collected the sample,text,column_header 
+Stream_Name,N/A,Stream name,text,column_header 
+Stream_Order,N/A,Stream order ,numeric,column_header 
+City,N/A,City,text,column_header 
+State_or_Province,N/A,State or Territory,text,column_header 
+Country,N/A,Country,text,column_header 
+General_Vegetation,N/A,General vegetation type from provided controlled vocabulary during sediment sampling. From provided controlled vocabulary with the option to select up to 2 if mixed ,text,column_header 
+Weather,N/A,General weather conditions during sampling,text,column_header 
+Hydrogeomorphology,N/A,General hydrogeomorphology of stream. From provided controlled vocabulary,text,column_header 
+River_Gradient,N/A,General gradient of stream. From provided controlled vocabulary,text,column_header 
+Intermittent_or_Perennial,N/A,Indicator of if the stream is intermittent or perennial,text,column_header 
+Sediment,N/A,Dominant sediment type. From provided controlled vocabulary,text,column_header 
+Distance_DS.and.MS_meters,meters,Distance between downstream and midstream site ,numeric,column_header 
+Distance_MS.and.US_meters,meters,Distance between upstream and midstream site,numeric,column_header 
+US_Latitude_dec.deg,decimal_degrees_WGS84,Latitude of upstream site,numeric,column_header 
+US_Longitude_dec.deg,decimal_degrees_WGS84,Longitude of upstream site,numeric,column_header 
+US_Water.Column.Height_cm,centimeters,Height of water column at upstream sampling location,numeric,column_header 
+US_Depositional.Type,N/A,Upstream sediment location depositional zone type. From provided controlled vocabulary with option to write it other terms ,text,column_header 
+US_Algal.Mat.Coverage,N/A,Indicator of algal mat coverage at the upstream site,text,column_header 
+US_Macrophyte.Coverage,N/A,Indicator of macrophyte coverage at the upstream site,text,column_header 
+US_Sunlight.Access_Perc.Canopy.Cover,N/A,Indicator of the extent sunlight is blocked from the stream by canopy cover or other sources at the upstream site,text,column_header 
+MS_Latitude_dec.deg,decimal_degrees_WGS84,Latitude of midstream site ,numeric,column_header 
+MS_Longitude_dec.deg,decimal_degrees_WGS84,Longitude of midstream site ,numeric,column_header 
+MS_Water.Column.Height_cm,centimeters,Height of water column at midstream sampling location ,numeric,column_header 
+MS_Depositional.Type,N/A,Midstream sediment location depositional zone type. From provided controlled vocabulary with option to write it other terms  ,text,column_header 
+MS_Algal.Mat.Coverage,N/A,Indicator of algal mat coverage at the midstream site what is the algal mat coverage,text,column_header 
+MS_Macrophyte.Coverage,N/A,Indicator of macrophyte coverage at the midstream site,text,column_header 
+MS_Sunlight.Access_Perc.Canopy.Cover,N/A,Indicator of the extent sunlight is blocked from the stream by canopy cover or other sources at the midstream site,text,column_header 
+DS_Latitude_dec.deg,decimal_degrees_WGS84,Latitude of downstream site,numeric,column_header 
+DS_Longitude_dec.deg,decimal_degrees_WGS84,Longitude of downstream site ,numeric,column_header 
+DS_Water.Column.Height_cm,centimeters,Height of water column at downstream sampling location,numeric,column_header 
+DS_Depositional.Type,N/A,Downstream sediment location depositional zone type. From provided controlled vocabulary with option to write it other terms   ,text,column_header 
+DS_Algal.Mat.Coverage,N/A,Indicator of algal mat coverage at the downstream site,text,column_header 
+DS_Macrophyte.Coverage,N/A,Indicator of macrophyte coverage at the downstream site,text,column_header 
+DS_Sunlight.Access_Perc.Canopy.Cover,N/A,Indicator of the extent sunlight is blocked from the stream by canopy cover or other sources at the downstream site,text,column_header 
+SW_pH,pH,pH value from colorimetric pH strip,numeric,column_header 
+DO_perc.sat,percent,Dissolved oxygen at 50% depth at downstream sampling location,numeric,column_header 
+DO_mg.per.L,milligrams_per_liter,Dissolved oxygen at 50% depth at downstream sampling location,numeric,column_header 
+SW_Temp_degC,degrees_celsius,Water temperature at 50% depth at downstream sampling location,numeric,column_header 
+Approx.Distance.From.Gauge_meters,meters,Approximate distance from gauging station ,numeric,column_header 
+Discharge_Link,N/A,Link for public stream gauge/discharge data if available,URL,column_header 
+US.or.DS.of.Gauge,N/A,Indicator of if the site is upstream or downstream of gauging station,text,column_header 
+Gauge_Latitude_dec.deg,decimal_degrees_WGS84,Gauging station latitude ,numeric,column_header 
+Gauge_Longitude_dec.deg,decimal_degrees_WGS84,Gauging station longitude,numeric,column_header 
+Primary.Sources.Flow.Variation,N/A,Indicator of the primary sources of variation in river flow,text,column_header 
+Met.Station.Nearby,N/A,Indicator if there is a meteorological station nearby,text,column_header 
+Met.Station,N/A,Name and link of meteorological station  if there is one,text,column_header 
+Precipitation.Within.Week,days,Indicator of precipitation within the last week,numeric,column_header 
+Number.Days.Since.Precip,days,Number of days since precipitation  if there was precipitation within the last week,numeric,column_header 
+Dam.Upstream.Site,N/A,Indicator for a dam upstream of the sampling location,text,column_header 
+Dam,meters,"Distance from nearest dam and name of dam  if there is one			",numeric,column_header 
+Contamination.Source.Upstream,N/A,"Indicator of any upstream contamination sources		",text,column_header 
+Contamination.Source,N/A,"Distance type and source if there are any upstream contamination sources		",text,column_header 
+Water.Quality.Data.Available,N/A,"Indicator of the existence of water quality data for the site	",text,column_header 
+Water.Quality.Data,N/A,List of types of water quality data if it exists,text,column_header 
+Known.Data,N/A,The approximate ranges and/or citations of any surface water cation and/or specific conductance data for the site ,text,column_header 
+Published.Work.On.Site,N/A,"Indicator of published work on the site		",text,column_header 
+Published.Work,N/A,Links and citations to published work if it exists,text,column_header 
+Notes,N/A,"Additional Notes 						",text,column_header 
+Sed_Extract_Method,N/A,Method of extracting sample,text,column_header 
+Frozen_Method,N/A,Frozen method (method code),text,column_header 
+Thaw_Date,N/A,Date Thawed,date,column_header 
+Thawed_Method,N/A,Thawed method (method code),text,column_header 
+Vial_Break_Method,N/A,Indicator of vial conditions (method code),text,column_header 
+Precipitate_Description,N/A,Precipitate Description (method code),text,column_header 
+Filter_Method,N/A,Filter method (method code),text,column_header 
+Randomized_Method,N/A,Indicator of randomized sampling (method code),text,column_header 
+Subsampling_Method,N/A,Subsampling approach method,text,column_header 
+Acidification_Method,N/A,Indicator of acidified in lab (method code),text,column_header 
+NPOC_Software_Method,N/A,NPOC method (method code),text,column_header 
+NPOC_Dilution_Method,N/A,Dilution method (method code),text,column_header 
+NPOC_Dilution_Factor,N/A,NPOC dilution factor for calculating NPOC concentration,numeric,column_header 
+NPOC_Dilution_Description,N/A,Description of why dilution occurred (method code),text,column_header 
+Geochem_Method_QA_QC,N/A,NPOC QA/QC (method code),text,column_header 
+C_Sample_Vol_mL,milliliters,Sample volume diluted prior to Solid Phase Extraction (SPE) based on desired carbon concentration,numeric,column_header 
+C_DIW_Vol_mL,milliliters,De-ionized (DI) water volume added to sample for dilution prior to Solid Phase Extraction (SPE),numeric,column_header 
+ICR_Dilution_Method,N/A,Indicator of if the desired carbon concentration for FTICR-MS was achieved via dilution (method code),text,column_header 
+Acidification_After_Dilution_Method,N/A,Indicator of if sample was re-acidified after dilution (method code),text,column_header 
+SPE_NPOC_sample_concentration_mg.per.L.as.C,milligrams_per_liter_as_carbon,Sample concentration after dilution (Target final concentration 1.5 milligrams per liter as carbon for solid phase extraction),numeric,column_header 
+SPE_sample_volume_mL,milliliters,Sample volume for Solid Phase Extraction (SPE),numeric,column_header 
+Final_Concen_After_SPE_ppm,ppm,Theoretical final concentration after Solid Phase Extraction (SPE) (assuming 60% efficiency),numeric,column_header 
+Methanol_elution_mL,milliliters,Methanol elution ,numeric,column_header 
+SPE_Method,N/A,Solid Phase Extraction (SPE) Method  (method code),text,column_header 
+FTICR_Format_Method,N/A,FTICR-MS Column Information (method code),text,column_header 
+FTICR_Ion_Accumulation_Time,seconds,FTICR-MS Ion Accumulation Time (IAT) ,numeric,column_header 
+INC_Method,N/A,Incubation method  (method code),text,column_header 
+SED_INC_DESC,N/A,Indicator of domestic (United States) or international samples,text,column_header 
+Mg_wt_percent,weight_percent,Magnesium (weight percent) from XRF,numeric,column_header 
+Al_wt_percent,weight_percent,Aluminum (weight percent) from XRF,numeric,column_header 
+Si_wt_percent,weight_percent,Silicon (weight percent) from XRF,numeric,column_header 
+P_wt_percent,weight_percent,Phosphorus (weight percent) from XRF,numeric,column_header 
+S_wt_percent,weight_percent,Sulfur (weight percent) from XRF,numeric,column_header 
+Ca_wt_percent,weight_percent,Calcium (weight percent) from XRF,numeric,column_header 
+Mn_wt_percent,weight_percent,Manganese (weight percent) from XRF,numeric,column_header 
+Fe_wt_percent,weight_percent,Iron (weight percent) from XRF,numeric,column_header 
+Cu_wt_percent,weight_percent,Copper (weight percent) from XRF,numeric,column_header 
+W_wt_percent,weight_percent,Tungsten (weight percent) from XRF,numeric,column_header 
+Hg_wt_percent,weight_percent,Mercury (weight percent) from XRF,numeric,column_header 
