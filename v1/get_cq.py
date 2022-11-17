@@ -1,6 +1,14 @@
 # Get c-q plots for WHONDRS, StreamStats, HYDROSHEDS, EPA-ACC, and EPA-ACW
 # Catchment controls on solute export -- https://www.sciencedirect.com/science/article/pii/S030917081500233X
 # 
+# Species richness in water samples (9 comp and sum of all comps)  -- 1_WAT_SR.csv
+# Shannon diversity in water samples (9 comp and sum of all comps) -- 2_WAT_SHANN.csv
+#
+# WHONDRS     -- Metadata pre-processed from Eric for PCA analysis -- 7_PCA_Eric_WHONDRS.csv
+# HYDROSHEDS  -- Pre-processed data from Erika                     -- 8_Hydrosheds.xlsx
+# StreamStats -- Pre-processed data from Michelle                  -- 6_StreamStats.xlsx
+# EPAWaters   -- Pre-processed data from Michelle                  -- 5_ACC_EPAWaters.csv and 5_ACW_EPAWaters.csv
+#
 # WHONDRS data
 #   1. SW_Temp_degC --> 11
 #   2. DO_mg.per.L  --> 10
@@ -39,9 +47,9 @@ np.set_printoptions(precision=2)
 def func(x, b, z):
     return b * np.power(x, z)
 
-#*****************************************;
-#  1a. Set pathsfor .csv files (WHONDRS)  ;
-#*****************************************;
+#******************************************;
+#  1a. Set paths for .csv files (WHONDRS)  ;
+#******************************************;
 path           = os.getcwd() + '/'
 #
 df_sr          = pd.read_csv(path + "Inputs_Outputs_v4/1_WAT_SR_54s_11f.csv", index_col = 1).iloc[:,1:] #[54 rows x 10 columns]
