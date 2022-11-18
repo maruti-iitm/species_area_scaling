@@ -20,7 +20,12 @@
 #   5. DO_perc.sat --> 9
 #
 # StreamStats data
-
+#   1. Latitude      --> 1
+#   2. Drainage area --> 2
+#   3. Elev          --> 3
+#   4. Precip        --> 4
+#   5. Forest cover  --> 7
+#
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
 # p-value from a curvefit
