@@ -26,6 +26,12 @@
 #   4. Precip        --> 4
 #   5. Forest cover  --> 7
 #
+# HYDROSHEDS data
+#   1. Actual ET - aet_mm_s04         --> 87
+#   2. Potential ET - pet_mm_s04      --> 73
+#   3. Air temp - tmp_dc_s05          --> 46
+#   4. Natural discharge - dis_m3_pmn --> 10
+#
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
 # p-value from a curvefit
@@ -207,7 +213,7 @@ path            = os.getcwd() + '/'
 df_sr           = pd.read_csv(path + "Inputs_Outputs_v4/1_WAT_SR_54s_11f.csv", index_col = 1).iloc[:,1:] #[54 rows x 10 columns]
 df_sd           = pd.read_csv(path + "Inputs_Outputs_v4/2_WAT_SHANN_54s_11f.csv", index_col = 1).iloc[:,1:] #[54 rows x 10 columns]
 #
-df_huc12        = pd.read_csv(path + "Inputs_Outputs_v4/8_Hydrosheds_huc12_54s_294f.csv", index_col = 1).iloc[:,1:-1] #(54, 292)
+df_huc12        = pd.read_csv(path + "Inputs_Outputs_v4/8_Hydrosheds_huc12_54s_294f.csv", index_col = 1).iloc[:,1:-1] #[54 rows x 292 columns]
 #
 comp_list       = df_sr.columns.to_list() #10
 huc12_ftrs_list = df_huc12.columns.to_list() #292
