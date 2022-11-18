@@ -193,7 +193,7 @@ for j in range(0,4): #Extrinsic features 0 to 12
 #*****************************************************************;
 #  3c. SR vs. extrinsic factors for 9 compounds and sum (labels)  ;
 #*****************************************************************;
-for j in range(0,4): #Extrinsic features 0 to 12
+for j in range(0,4): #Extrinsic features 0 to 4
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)

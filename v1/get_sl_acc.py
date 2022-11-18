@@ -1,13 +1,10 @@
-# Get species richness vs. WHONDRS data (important features scaling laws)
+# Get species richness vs. EPAW-C data (important features scaling laws)
 # 
-# 1. SW_Temp_degC --> 11
-# 2. DO_mg.per.L  --> 10
-# 3. Avg water column height      --> avg of 2, 4, 6
-#       US_Water.Column.Height_cm --> 2
-#       MS_Water.Column.Height_cm --> 4
-#       DS_Water.Column.Height_cm --> 6
-# 4. SW_pH       --> 8
-# 5. DO_perc.sat --> 9
+# 1. Percent forest cover loss - PctFrstLoss --> 34
+# 2. Precipitation gradient - SN             --> 84
+# 3. PctNonAgIntrodManagVegCat               --> 92
+# 4. Mean annual stream temperature -- MAST  --> 115
+# 5. Mean summer stream temperature - MSST   --> 126
 #
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
@@ -46,15 +43,15 @@ def f_wrapper_for_odr(beta, x): #parameter order for odr
 #===============================;
 def get_pvalue(i, j):
 
-    ind      = np.argwhere(~np.isnan(wdrs_ftimp_arr[:,j]))[:,0]
-    parameters, cov = curve_fit(func, wdrs_ftimp_arr[ind,j], sr_arr[ind,i])
+    ind      = np.argwhere(~np.isnan(hs_arr[:,j]))[:,0]
+    parameters, cov = curve_fit(func, hs_arr[ind,j], sr_arr[ind,i])
     #
     model    = scipy.odr.odrpack.Model(f_wrapper_for_odr)
-    data     = scipy.odr.odrpack.Data(wdrs_ftimp_arr[ind,j], sr_arr[ind,i])
+    data     = scipy.odr.odrpack.Data(hs_arr[ind,j], sr_arr[ind,i])
     myodr    = scipy.odr.odrpack.ODR(data, model, beta0=parameters,  maxit=0)
     myodr.set_job(fit_type=2)
     parameterStatistics = myodr.run()
-    df_e     = len(wdrs_ftimp_arr[ind,j]) - len(parameters) # degrees of freedom, error
+    df_e     = len(hs_arr[ind,j]) - len(parameters) # degrees of freedom, error
     cov_beta = parameterStatistics.cov_beta # parameter covariance matrix from ODR
     sd_beta  = parameterStatistics.sd_beta * parameterStatistics.sd_beta
     ci       = []
@@ -83,24 +80,27 @@ path           = os.getcwd() + '/'
 df_sr          = pd.read_csv(path + "Inputs_Outputs_v4/1_WAT_SR_54s_11f.csv", index_col = 1).iloc[:,1:] #[54 rows x 10 columns]
 df_sd          = pd.read_csv(path + "Inputs_Outputs_v4/2_WAT_SHANN_54s_11f.csv", index_col = 1).iloc[:,1:] #[54 rows x 10 columns]
 #
-df_wdrs        = pd.read_csv(path + 'Inputs_Outputs_v4/7_PCA_Eric_WHONDRS_54s_13f.csv', index_col = 1).iloc[:,1:] #[54 rows x 12 columns]
+df_acc_all     = pd.read_csv(path + "Inputs_Outputs_v4/5_ACC_EPAWaters_54s_141f.csv", index_col = 1).iloc[:,1:] #(54, 140)
+acc_list       = np.delete(np.arange(0,140), [2,3,126])
+df_acc         = df_acc_all.iloc[:,acc_list] #[54 rows x 137 columns]
 #
 comp_list      = df_sr.columns.to_list() #10
-wdrs_ftrs_list = df_wdrs.columns.to_list() #12
+acc_ftrs_list  = df_acc.columns.to_list() #137
 #
-sr_arr         = df_sr.values #(54, 10) #species richness
-sd_arr         = df_sd.values #(54, 10) #shannon diversity
-wdrs_arr       = df_wdrs.values #(54, 12) #ftrs
+sr_arr         = df_sr.values #(54, 10)
+acc_arr        = df_acc.values #(54, 137)
+#
+epaacc_index_list = [34, 82, 92, 115, 126, 131] #5 -- imp features
+epaacc_ftrs_list  = ['Percent forest cover loss - PctFrstLoss', \
+                        'Precipitation gradient - SN', \
+                        'PctNonAgIntrodManagVegCat', \
+                        'Mean annual stream temperature -- MAST', \
+                        'Mean summer stream temperature - MSST'] #5
+#
+hs_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 6)
 #
 marker_list    = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^'] #10
 color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange'] #10
-#
-wdrs_ftimp_arr        = np.zeros((wdrs_arr.shape[0], 5), dtype = float) #(54,5)
-wdrs_ftimp_arr[:,0]   = copy.deepcopy(np.mean(wdrs_arr[:,[2,4,6]], axis = 1)) #Avg water column height
-wdrs_ftimp_arr[:,1:5] = copy.deepcopy(wdrs_arr[:,[8,9,10,11]]) #Copy imp ftrs
-#
-imp_ftrs_list  = ['Avg_Water.Column.Height_cm', \
-                    'SW_pH', 'DO_perc.sat', 'DO_mg.per.L', 'SW_Temp_degC'] #Important features
 
 #*****************************************************************;
 #  2. log(SR) vs. log(extrinsic factors) for 9 compounds and sum  ;
@@ -114,14 +114,14 @@ z_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
 #
 for j in range(0,5): #Top-5 features
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
-        ind         = np.argwhere(~np.isnan(wdrs_ftimp_arr[:,j]))[:,0]
+        ind        = np.argwhere(~(hs_arr[:,j] == 0))[:,0]
         #
         m_sr, c_sr, \
         r_value_sr, \
         p_value_sr,\
-        std_err_sr  = linregress(np.log10(wdrs_ftimp_arr[ind,j] + 1e-8), np.log(sr_arr[ind,i]+ 1e-8))
+        std_err_sr  = linregress(np.log10(hs_arr[ind,j]), np.log(sr_arr[ind,i]))
         print('i, j, Comp name, Extrinsic feature, logz_sr, logb_sr, z_sr, b_sr = ', \
-                i, j, comp_list[i], imp_ftrs_list[j], \
+                i, j, comp_list[i], epaacc_ftrs_list[j], \
                 '{0:.3g}'.format(m_sr), '{0:.3g}'.format(c_sr), \
                 '{0:.3g}'.format(10**m_sr), '{0:.3g}'.format(10**c_sr))
         #
@@ -134,17 +134,20 @@ for j in range(0,5): #Top-5 features
 #********************************************************************;
 #  3a. log(SR) vs. log10(extrinsic factors) for 9 compounds and sum  ;
 #********************************************************************;
-ymin_list  = [-0.1, -0.1, -0.5, -0.5, -1]
-ymax_list  = [8.5, 8.5, 8.5, 8.5, 8.5]
+imp_ftrs_list  = ['PctFrstLoss', 'PrecipGrad', 'PctNonAgIntrodManagVegCat', \
+                        'MeanAnnStrmTemp', 'MeanSummerStrmTemp']
 #
-for j in range(0,5): #Extrinsic features 0 to 12
+ymin_list  = [-0.1, -2, -0.5, -0.5]
+ymax_list  = [8.5, 8.5, 8.5, 8.5]
+#
+for j in range(0,5): #Extrinsic features 0 to 4
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
-    ax.set_xlabel(imp_ftrs_list[j] + ' (in log10)', fontsize = 12, fontweight = 'bold')
+    ax.set_xlabel(epaacc_ftrs_list[j] + ' (in log10)', fontsize = 12, fontweight = 'bold')
     ax.set_ylabel('Species richness (in log10)', fontsize = 12, fontweight = 'bold')
-    plt.title('log(SR) vs. log(' + imp_ftrs_list[j] + ')')
-    ax.set_ylim([ymin_list[j], ymax_list[j]])
+    plt.title('log(SR) vs. log(' + epaacc_ftrs_list[j] + ')')
+    #ax.set_ylim([ymin_list[j], ymax_list[j]])
     #
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
         color   = color_list[i]
@@ -153,47 +156,45 @@ for j in range(0,5): #Extrinsic features 0 to 12
         c_sr    = logb_list[i,j]
         m_sr    = logz_list[i,j]
         #
-        yfit_sr = np.asarray([c_sr + m_sr*xi for xi in np.log10(wdrs_ftimp_arr[:,j] + 1e-8)])
+        ind        = np.argwhere(~(hs_arr[:,j] == 0))[:,0]
+        yfit_sr = np.asarray([c_sr + m_sr*xi for xi in np.log10(hs_arr[ind,j])])
         #
-        ax.scatter(np.log10(wdrs_ftimp_arr[:,j] + 1e-8), np.log(sr_arr[:,i]+ 1e-8), \
+        ax.scatter(np.log10(hs_arr[ind,j]), np.log(sr_arr[ind,i]), \
                     s = 20, c = color, marker = marker, edgecolor = 'face')
-        ax.plot(np.log10(wdrs_ftimp_arr[:,j] + 1e-8), yfit_sr, \
+        ax.plot(np.log10(hs_arr[ind,j]), yfit_sr, \
                 color = color, label = comp_list[i])
-    ax.legend(bbox_to_anchor=(1.05, 1.0), loc = 'upper left')
+    ax.legend(bbox_to_anchor=(1.04, 1.0), loc = 'upper left')
     fig.tight_layout()
-    plt.savefig(path + 'Plots_WHONDRS/Scaling_Laws/logSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/logSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
     plt.close(fig)
 
 #********************************************************;
 #  3b. SR vs. extrinsic factors for 9 compounds and sum  ;
 #********************************************************;
-ymin_list  = [10**i for i in [-0.1, -0.1, -0.5, -0.5, -1]]
-ymax_list  = [10**i for i in [8.5, 8.5, 8.5, 8.5, 8.5]]
-#
-for j in range(0,5): #Extrinsic features 0 to 12
+for j in range(0,5): #Extrinsic features 0 to 4
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
-    ax.set_xlabel(imp_ftrs_list[j], fontsize = 12, fontweight = 'bold')
+    ax.set_xlabel(epaacc_ftrs_list[j], fontsize = 12, fontweight = 'bold')
     ax.set_ylabel('Species richness', fontsize = 12, fontweight = 'bold')
-    plt.title('SR vs. ' + imp_ftrs_list[j])
+    plt.title('SR vs. ' + epaacc_ftrs_list[j])
     #ax.set_ylim([ymin_list[j], ymax_list[j]])
     #
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
         color      = color_list[i]
         marker     = marker_list[i]
         #
-        ind        = np.argwhere(~np.isnan(wdrs_ftimp_arr[:,j]))[:,0]
-        popt, pcov = curve_fit(func, wdrs_ftimp_arr[ind,j], sr_arr[ind,i])
-        print(imp_ftrs_list[j], comp_list[i], popt)
+        ind        = np.argwhere(~np.isnan(hs_arr[:,j]))[:,0]
+        popt, pcov = curve_fit(func, hs_arr[ind,j], sr_arr[ind,i])
+        print(epaacc_ftrs_list[j], comp_list[i], popt)
         #
-        ax.scatter(wdrs_ftimp_arr[:,j], sr_arr[:,i], \
+        ax.scatter(hs_arr[:,j], sr_arr[:,i], \
                     s = 20, c = color, marker = marker, edgecolor = 'face')
-        ax.plot(np.sort(wdrs_ftimp_arr[ind,j]), func(np.sort(wdrs_ftimp_arr[ind,j]), *popt), \
+        ax.plot(np.sort(hs_arr[ind,j]), func(np.sort(hs_arr[ind,j]), *popt), \
                 color = color, label = comp_list[i] + ',  SE = ' + str('{0:.3g}'.format(popt[1])))
-    #ax.legend(bbox_to_anchor=(1.05, -0.1), loc = 'lower left')
+    #ax.legend(bbox_to_anchor=(1.04, 1.0), loc = 'upper left')
     fig.tight_layout()
-    plt.savefig(path + 'Plots_WHONDRS/Scaling_Laws/SR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/SR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
     plt.close(fig)
 
 #*****************************************************************;
@@ -217,5 +218,5 @@ for j in range(0,5): #Extrinsic features 0 to 4
                 ',  pv-z = ' + str('{0:.3g}'.format(pval[1])))
     ax.legend(bbox_to_anchor=(1.05, 1.0), loc = 'upper left')
     fig.tight_layout()
-    plt.savefig(path + 'Plots_WHONDRS/Scaling_Laws/LegendSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/LegendSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
     plt.close(fig)

@@ -32,6 +32,14 @@
 #   3. Air temp - tmp_dc_s05          --> 46
 #   4. Natural discharge - dis_m3_pmn --> 10
 #
+# EPAWaters-C (Catchment) data
+#   1. Percent forest cover loss - PctFrstLoss --> 34
+#   2. Precipitation gradient - SN             --> 84
+#   3. PctNonAgIntrodManagVegCat               --> 92
+#   4. Mean annual stream temperature -- MAST  --> 115
+#   5. Mean summer stream temperature - MSST   --> 126
+#
+#
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
 # p-value from a curvefit
@@ -302,7 +310,7 @@ epaacc_ftrs_list  = ['Percent forest cover loss - PctFrstLoss', \
                         'Mean annual stream temperature -- MAST', \
                         'Mean summer stream temperature - MSST'] #5
 #
-hs_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 5)
+hs_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 6)
 
 #**************************;
 #  4b. c-q (EPA-ACC data)  ;
