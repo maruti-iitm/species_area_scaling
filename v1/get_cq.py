@@ -39,6 +39,13 @@
 #   4. Mean annual stream temperature -- MAST  --> 115
 #   5. Mean summer stream temperature - MSST   --> 126
 #
+# EPAWaters-W (Watersheds) data
+#   1. NPDESDensWs --> 15
+#   2. TRIDensWs   --> 17
+#   3. PctUrbHiWs  --> 110
+#   4. PctUrbLoWs  --> 111
+#   5. PctUrbMdWs  --> 112
+#   6. PctUrbOpWs  --> 113 
 #
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
