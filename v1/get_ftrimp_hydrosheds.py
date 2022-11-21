@@ -208,7 +208,7 @@ ftrs_imp[4,:] = copy.deepcopy(pcorr_imp) #pcorr
 ftrs_imp[5,:] = copy.deepcopy(scorr_imp) #scorr
 #
 #ftrs_imp[6,:] = np.sum(ftrs_imp[0:6,:], axis = 0)/np.max(np.sum(ftrs_imp[0:6], axis = 0))
-ftrs_imp[6,:] = np.mean(ftrs_imp[0:6,:], axis = 0)
+ftrs_imp[6,:] = np.mean(ftrs_imp[0:6,:], axis = 0) #Avg-value
 
 #***************************************************;
 #  5a. F-test and MI plots for 9 compounds and sum  ;
