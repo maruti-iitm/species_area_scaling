@@ -132,7 +132,6 @@ epaacc_ftrs_list  = ['Percent forest cover loss - PctFrstLoss', \
                         '30 year max normal temperature - Tmax', \
                         'Mean annual stream temperature -- MAST', \
                         'Mean summer stream temperature - MSST'] #12
-
 #
 epac_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 12)
 #
