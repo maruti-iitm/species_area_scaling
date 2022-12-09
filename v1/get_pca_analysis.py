@@ -1,5 +1,18 @@
-# Perform PCA analysis on WHONDRS, StreamStats, HYDROSHEDS, EPA-ACC, and EPA-ACW
+# Perform PCA analysis on WHONDRS, StreamStats, HYDROSHEDS, EPA-ACC, and EPA-ACW on imp features
 #
+#   WHONDRS features removed for only PCA analysis because of NaNs
+#       DO_perc.sat  --> 10
+#       DO_mg.per.L  --> 11
+#       SW_Temp_degC --> 12
+#
+#   StreamStats features removed for only PCA analysis because of NaNs
+#       ELEV     --> 3
+#       PRECIP   --> 4
+#       ELEVMAX  --> 5
+#       MINBELEV --> 6
+#       FOREST   --> 7
+#
+# https://stackoverflow.com/questions/45333733/plotting-pca-output-in-scatter-plot-whilst-colouring-according-to-to-label-pytho
 # AUTHOR -- Maruti Kumar Mudunuru
 
 import os
@@ -8,6 +21,7 @@ import numpy as np
 import copy
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import itertools
 #
 import sklearn #'1.0.2'
 from sklearn.decomposition import PCA
@@ -30,7 +44,8 @@ wdrs_ftrs_list = df_wdrs.columns.to_list() #12
 #
 sr_arr         = df_sr.values #(54, 10) #species richness
 sd_arr         = df_sd.values #(54, 10) #shannon diversity
-wdrs_arr       = df_wdrs.values #(54, 12) #ftrs
+wdrs_arr       = df_wdrs.values[:,0:9] #(54, 9) #ftrs
+wdrs_id_list   = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] #wdrs ids that are non-NaNs
 
 #**********************************************;
 #  1b. Set paths for .csv files (StreamStats)  ;
@@ -40,7 +55,8 @@ df_strmstats   = pd.read_csv(path + "Inputs_Outputs_v4/6_StreamStats_54s_9f.csv"
 comp_list      = df_sr.columns.to_list() #10
 strm_ftrs_list = df_strmstats.columns.to_list() #8
 #
-strm_arr       = df_strmstats.values #(54, 8) #ftrs
+strm_arr       = df_strmstats.values[:,0:3] #(54, 3) #ftrs
+strm_id_list   = [0, 1, 2] #strm ids that are non-NaNs
 
 #*********************************************;
 #  1c. Set paths for .csv files (HYDROSHEDS)  ;
@@ -129,27 +145,27 @@ epaw_arr          = copy.deepcopy(acw_arr[:,epaacw_index_list]) #(54, 22)
 #*******************************************;
 #  2a. Construct the full data matrix (raw) ;
 #*******************************************;
-num_samples = wdrs_arr.shape[0] #54
-num_ftrs    = wdrs_arr.shape[1] + strm_arr.shape[1] + \
-                hs_arr.shape[1] + epac_arr.shape[1] + \
-                epaw_arr.shape[1] #62
-full_arr    = np.zeros((num_samples, num_ftrs), dtype = float)
+num_samples       = wdrs_arr.shape[0] #54
+num_ftrs          = wdrs_arr.shape[1] + strm_arr.shape[1] + \
+                    hs_arr.shape[1] + epac_arr.shape[1] + \
+                    epaw_arr.shape[1] #54
+full_arr          = np.zeros((num_samples, num_ftrs), dtype = float)
 #
-full_arr[:,0:12]  = copy.deepcopy(wdrs_arr) #whondrs
-full_arr[:,12:20] = copy.deepcopy(strm_arr) #streamstats
-full_arr[:,20:28] = copy.deepcopy(hs_arr) #hydrosheds
-full_arr[:,28:40] = copy.deepcopy(epac_arr) #epa-catchment
-full_arr[:,40:62] = copy.deepcopy(epaw_arr) #epa-watershed
+full_arr[:,0:9]   = copy.deepcopy(wdrs_arr) #whondrs #9
+full_arr[:,9:12]  = copy.deepcopy(strm_arr) #streamstats #3
+full_arr[:,12:20] = copy.deepcopy(hs_arr) #hydrosheds #8
+full_arr[:,20:32] = copy.deepcopy(epac_arr) #epa-catchment #12
+full_arr[:,32:54] = copy.deepcopy(epaw_arr) #epa-watershed #22
 #
-nonnan_rows_list = [] #find non-nan samples = 23
+nonnan_rows_list  = [] #find non-nan samples = 54
 #
 for i in range(0,num_samples): #Iterate over number of samples
     if len(np.argwhere(np.isnan(full_arr[i,:]))[:,0]) == 0:
         print(i, len(np.argwhere(np.isnan(full_arr[i,:]))[:,0]))
         nonnan_rows_list.append(i) #Non-nan sample indices
 
-X = copy.deepcopy(full_arr[nonnan_rows_list,:]) #(3, 62); full data features with non-nan samples
-y = copy.deepcopy(sr_arr[nonnan_rows_list,:]) #(3, 10); sr corresponding to non-nan samples
+X = copy.deepcopy(full_arr[nonnan_rows_list,:]) #(54, 54); full data features with non-nan samples
+y = copy.deepcopy(sr_arr[nonnan_rows_list,:]) #(54, 10); sr corresponding to non-nan samples
 
 #************************************************************;
 #  2b. Normalize the full data matrix using Standard Scalar  ;
@@ -157,11 +173,53 @@ y = copy.deepcopy(sr_arr[nonnan_rows_list,:]) #(3, 10); sr corresponding to non-
 fdm_ss = StandardScaler() #Full-data-matrix (fdm) standard-scalar
 fdm_ss.fit(X) #Fit standard-scalar for full-data-matrix (fdm)
 #
-X_ss  = fdm_ss.transform(X) #Transform full-data-matrix (3, 62)
+X_ss   = fdm_ss.transform(X) #Transform full-data-matrix (54, 54); (num_samples, num_ftrs)
+X_ss_t = X_ss.T #Transpose the transformed full-data-matrix (54, 54); (num_ftrs, n_samples)
 
-#****************************;
-#  2c. Perform PCA analysis  ;
-#****************************;
-pca      = PCA(n_components=2)
-pca.fit(X_ss)
-X_pca_tr = pca.fit_transform(X_ss) #(3, 2)
+#******************************************************************************;
+#  2c. Perform PCA analysis on (n_ftrs, n_samples) --> (n_ftrs, n_components)  ;
+#******************************************************************************;
+pca        = PCA(n_components=2)
+pca.fit(X_ss_t)
+X_pca_ss_t = pca.fit_transform(X_ss_t) #(54, 2)
+
+#*******************************************************************************************;
+#  3. Plot PCA components with labels = WHONDRS, StreamStats, HYDROSHEDS, EPA-C, and EPA-W  ;
+#*******************************************************************************************;
+marker_list  = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^'] #10
+color_list   = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange'] #10
+#
+wdrs_cvec    = ['b' for i in range(0,wdrs_arr.shape[1])] #Color vector creation for wdrs
+strm_cvec    = ['k' for i in range(0,strm_arr.shape[1])] #Color vector creation for strm
+hs_cvec      = ['r' for i in range(0,hs_arr.shape[1])] #Color vector creation for hs
+epac_cvec    = ['c' for i in range(0,epac_arr.shape[1])] #Color vector creation for epac
+epaw_cvec    = ['m' for i in range(0,epaw_arr.shape[1])] #Color vector creation for epaw
+#
+cvec_sublist = [wdrs_cvec, strm_cvec, hs_cvec, epac_cvec, epaw_cvec]
+cvec_full    = list(itertools.chain.from_iterable(cvec_sublist)) #Color vector creation for full ftrs
+#
+wdrs_mvec    = ['o' for i in range(0,wdrs_arr.shape[1])] #Marker vector creation for wdrs
+strm_mvec    = ['v' for i in range(0,strm_arr.shape[1])] #Marker vector creation for strm
+hs_mvec      = ['8' for i in range(0,hs_arr.shape[1])] #Marker vector creation for hs
+epac_mvec    = ['s' for i in range(0,epac_arr.shape[1])] #Marker vector creation for epac
+epaw_mvec    = ['p' for i in range(0,epaw_arr.shape[1])] #Marker vector creation for epaw
+#
+mvec_sublist = [wdrs_mvec, strm_mvec, hs_mvec, epac_mvec, epaw_mvec]
+mvec_full    = list(itertools.chain.from_iterable(mvec_sublist)) #Marker vector creation for full ftrs
+#
+legend_properties = {'weight':'bold'}
+fig = plt.figure(figsize=(5,5))
+plt.rc('legend', fontsize = 8)
+ax  = fig.add_subplot(111)
+ax.set_xlabel('PC 1 (%.2f%%)' % (pca.explained_variance_ratio_[0]*100))
+ax.set_ylabel('PC 2 (%.2f%%)' % (pca.explained_variance_ratio_[1]*100))
+ax.scatter(X_pca_ss_t[:,0], X_pca_ss_t[:,1], c = cvec_full, s = 25, edgecolor = ['none'])
+ax.plot([], [], color = 'b', marker = 'o', linestyle = 'None', label = 'WHONDRS')
+ax.plot([], [], color = 'k', marker = 'o', linestyle = 'None', label = 'StreamStats')
+ax.plot([], [], color = 'r', marker = 'o', linestyle = 'None', label = 'Hydrosheds')
+ax.plot([], [], color = 'c', marker = 'o', linestyle = 'None', label = 'EPAW-C')
+ax.plot([], [], color = 'm', marker = 'o', linestyle = 'None', label = 'EPAW-W')
+ax.legend(loc = 'upper left')
+fig.tight_layout()
+plt.savefig(path + 'PCA_all/PCA_ftrs_all.png', dpi = 300)
+plt.close(fig)
