@@ -1,4 +1,6 @@
-# Perform PCA analysis on WHONDRS, StreamStats, HYDROSHEDS, EPA-ACC, and EPA-ACW on imp features
+# Perform PCA analysis on WHONDRS, StreamStats, HYDROSHEDS, EPA-ACC, and EPA-ACW 
+#   1. on imp features 
+#   2. on variation across samples
 #
 #   WHONDRS features removed for only PCA analysis because of NaNs
 #       DO_perc.sat  --> 10
@@ -179,13 +181,21 @@ X_ss_t = X_ss.T #Transpose the transformed full-data-matrix (54, 54); (num_ftrs,
 #******************************************************************************;
 #  2c. Perform PCA analysis on (n_ftrs, n_samples) --> (n_ftrs, n_components)  ;
 #******************************************************************************;
-pca        = PCA(n_components=2)
-pca.fit(X_ss_t)
-X_pca_ss_t = pca.fit_transform(X_ss_t) #(54, 2)
+pca_ftrs   = PCA(n_components=2, random_state = 1337)
+pca_ftrs.fit(X_ss_t) #PCA on ftrs
+X_pca_ss_t = pca_ftrs.fit_transform(X_ss_t) #(54, 2)
 
-#*******************************************************************************************;
-#  3. Plot PCA components with labels = WHONDRS, StreamStats, HYDROSHEDS, EPA-C, and EPA-W  ;
-#*******************************************************************************************;
+#********************************************************************************;
+#  2d. Perform PCA analysis on (n_samples,n_ftrs) --> (n_samples, n_components)  ;
+#********************************************************************************;
+pca_samples = PCA(n_components=2, random_state = 1337)
+pca_samples.fit(X_ss) #PCA on samples
+X_pca_ss    = pca_samples.fit_transform(X_ss) #(54, 2)
+
+#********************************************************************************************;
+#  3a. Plot PCA components with labels = WHONDRS, StreamStats, HYDROSHEDS, EPA-C, and EPA-W  ;
+#      (Variation across features)                                                           ;
+#********************************************************************************************;
 marker_list  = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^'] #10
 color_list   = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange'] #10
 #
@@ -211,8 +221,8 @@ legend_properties = {'weight':'bold'}
 fig = plt.figure(figsize=(5,5))
 plt.rc('legend', fontsize = 8)
 ax  = fig.add_subplot(111)
-ax.set_xlabel('PC 1 (%.2f%%)' % (pca.explained_variance_ratio_[0]*100))
-ax.set_ylabel('PC 2 (%.2f%%)' % (pca.explained_variance_ratio_[1]*100))
+ax.set_xlabel('PC 1 (%.2f%%)' % (pca_ftrs.explained_variance_ratio_[0]*100))
+ax.set_ylabel('PC 2 (%.2f%%)' % (pca_ftrs.explained_variance_ratio_[1]*100))
 ax.scatter(X_pca_ss_t[:,0], X_pca_ss_t[:,1], c = cvec_full, s = 25, edgecolor = ['none'])
 ax.plot([], [], color = 'b', marker = 'o', linestyle = 'None', label = 'WHONDRS')
 ax.plot([], [], color = 'k', marker = 'o', linestyle = 'None', label = 'StreamStats')
@@ -222,4 +232,19 @@ ax.plot([], [], color = 'm', marker = 'o', linestyle = 'None', label = 'EPAW-W')
 ax.legend(loc = 'upper left')
 fig.tight_layout()
 plt.savefig(path + 'PCA_all/PCA_ftrs_all.png', dpi = 300)
+plt.close(fig)
+
+#********************************************************************************************;
+#  3b. Plot PCA components with labels = WHONDRS, StreamStats, HYDROSHEDS, EPA-C, and EPA-W  ;
+#      (Variation across data samples)                                                       ;
+#********************************************************************************************;
+legend_properties = {'weight':'bold'}
+fig = plt.figure(figsize=(5,5))
+plt.rc('legend', fontsize = 8)
+ax  = fig.add_subplot(111)
+ax.set_xlabel('PC 1 (%.2f%%)' % (pca_samples.explained_variance_ratio_[0]*100))
+ax.set_ylabel('PC 2 (%.2f%%)' % (pca_samples.explained_variance_ratio_[1]*100))
+ax.scatter(X_pca_ss[:,0], X_pca_ss[:,1], c = 'k', s = 25, edgecolor = ['none'])
+fig.tight_layout()
+plt.savefig(path + 'PCA_all/PCA_samples_all.png', dpi = 300)
 plt.close(fig)

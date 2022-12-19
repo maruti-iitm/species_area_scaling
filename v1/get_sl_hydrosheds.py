@@ -4,6 +4,7 @@
 # 2. Potential ET - pet_mm_s04      --> 73
 # 3. Air temp - tmp_dc_s05          --> 46
 # 4. Natural discharge - dis_m3_pmn --> 10
+# 5. Inundation extent - inu_pc_slt --> 17
 #
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
@@ -88,11 +89,12 @@ sr_arr          = df_sr.values #(54, 10)
 sd_arr          = df_sd.values #(54, 10)
 huc12_arr       = df_huc12.values #(54, 292)
 #
-hydrosheds_index_list = [10, 46, 73, 87] #4 -- imp ftrs indices
-hydrosheds_ftrs_list  = ['Natural discharge - dis_m3_pmn', 'Air temp - tmp_dc_s05', \
-                            'Potential ET - pet_mm_s04', 'Actual ET - aet_mm_s04'] #4
+hydrosheds_index_list = [10, 17, 46, 73, 87] #5 -- imp ftrs indices
+hydrosheds_ftrs_list  = ['Natural discharge - dis_m3_pmn', 'Inundation extent - inu_pc_slt', \
+                            'Air temp - tmp_dc_s05', 'Potential ET - pet_mm_s04', \
+                            'Actual ET - aet_mm_s04'] #5
 #
-hs_arr           = copy.deepcopy(huc12_arr[:,hydrosheds_index_list]) #(54, 4)
+hs_arr           = copy.deepcopy(huc12_arr[:,hydrosheds_index_list]) #(54, 5)
 #
 marker_list    = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^'] #10
 color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange'] #10
@@ -101,13 +103,13 @@ color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 
 #  2. log(SR) vs. log(extrinsic factors) for 9 compounds and sum  ;
 #      log(SR) = log(b) + z*log(EF)                               ;
 #*****************************************************************;
-logb_list = np.zeros((len(comp_list), 4), dtype = float) #(10,4)
-logz_list = np.zeros((len(comp_list), 4), dtype = float) #(10,4)
+logb_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
+logz_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
 #
-b_list    = np.zeros((len(comp_list), 4), dtype = float) #(10,4)
-z_list    = np.zeros((len(comp_list), 4), dtype = float) #(10,4)
+b_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
+z_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
 #
-for j in range(0,4): #Top-4 features
+for j in range(0,5): #Top-5 features
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
         ind         = np.argwhere(~np.isnan(hs_arr[:,j]))[:,0]
         #
@@ -129,12 +131,12 @@ for j in range(0,4): #Top-4 features
 #********************************************************************;
 #  3a. log(SR) vs. log10(extrinsic factors) for 9 compounds and sum  ;
 #********************************************************************;
-imp_ftrs_list  = ['Discharge', 'AirTemp', 'PotentialET', 'ActualET']
+imp_ftrs_list  = ['Discharge', 'InundationExtent', 'AirTemp', 'PotentialET', 'ActualET']
 #
-ymin_list  = [-0.1, -2, -0.5, -0.5]
-ymax_list  = [8.5, 8.5, 8.5, 8.5]
+ymin_list  = [-0.1, -0.1, -2, -0.5, -0.5]
+ymax_list  = [8.5, 8.5, 8.5, 8.5, 8.5]
 #
-for j in range(0,4): #Extrinsic features 0 to 4
+for j in range(0,5): #Extrinsic features 0 to 5
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
@@ -164,7 +166,7 @@ for j in range(0,4): #Extrinsic features 0 to 4
 #********************************************************;
 #  3b. SR vs. extrinsic factors for 9 compounds and sum  ;
 #********************************************************;
-for j in range(0,4): #Extrinsic features 0 to 12
+for j in range(0,5): #Extrinsic features 0 to 5
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
@@ -193,7 +195,7 @@ for j in range(0,4): #Extrinsic features 0 to 12
 #*****************************************************************;
 #  3c. SR vs. extrinsic factors for 9 compounds and sum (labels)  ;
 #*****************************************************************;
-for j in range(0,4): #Extrinsic features 0 to 4
+for j in range(0,5): #Extrinsic features 0 to 5
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)

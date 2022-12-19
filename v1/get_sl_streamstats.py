@@ -1,10 +1,11 @@
 # Get species richness vs. StreamStats data (important features scaling laws)
 # 
-# 1. Latitude      --> 1
-# 2. Drainage area --> 2
-# 3. Elev          --> 3
-# 4. Precip        --> 4
-# 5. Forest cover  --> 7
+# 1. Latitude            --> 1
+# 2. Drainage area       --> 2
+# 3. Elev                --> 3
+# 4. Precip              --> 4
+# 5. Min basin elevation --> 6
+# 6. Forest cover        --> 7
 #
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
@@ -88,10 +89,11 @@ strm_ftrs_list = df_strmstats.columns.to_list() #8
 sr_arr         = df_sr.values #(54, 10)
 strm_arr       = df_strmstats.values #(54, 8)
 #
-s_index_list = [1, 2, 3, 4, 7] #5
-s_ftrs_list  = ['Latitude', 'DrainageArea', 'Elevation', 'Precipitation', 'ForestCover'] #5
+s_index_list   = [1, 2, 3, 4, 6, 7] #6
+s_ftrs_list    = ['Latitude', 'DrainageArea', 'Elevation', 'Precipitation', \
+                'Min basin elevation', 'ForestCover'] #6
 #
-hs_arr       = copy.deepcopy(strm_arr[:,s_index_list]) #(54, 5)
+hs_arr         = np.abs(copy.deepcopy(strm_arr[:,s_index_list])) #(54, 6)
 #
 marker_list    = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^'] #10
 color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange'] #10
@@ -100,13 +102,13 @@ color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 
 #  2. log(SR) vs. log(extrinsic factors) for 9 compounds and sum  ;
 #      log(SR) = log(b) + z*log(EF)                               ;
 #*****************************************************************;
-logb_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
-logz_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
+logb_list = np.zeros((len(comp_list), 6), dtype = float) #(10,6)
+logz_list = np.zeros((len(comp_list), 6), dtype = float) #(10,6)
 #
-b_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
-z_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
+b_list    = np.zeros((len(comp_list), 6), dtype = float) #(10,6)
+z_list    = np.zeros((len(comp_list), 6), dtype = float) #(10,6)
 #
-for j in range(0,5): #Top-5 features
+for j in range(0,6): #Top-6 features
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
         ind         = np.argwhere(~np.isnan(hs_arr[:,j]))[:,0]
         #
@@ -128,12 +130,13 @@ for j in range(0,5): #Top-5 features
 #********************************************************************;
 #  3a. log(SR) vs. log10(extrinsic factors) for 9 compounds and sum  ;
 #********************************************************************;
-imp_ftrs_list  = ['Latitude', 'DrainageArea', 'Elevation', 'Precipitation', 'ForestCover']
+imp_ftrs_list  = ['Latitude', 'DrainageArea', 'Elevation', 'Precipitation', \
+                    'Min basin elevation', 'ForestCover']
 #
-ymin_list  = [-0.1, -2, -0.5, -0.5]
-ymax_list  = [8.5, 8.5, 8.5, 8.5]
+ymin_list  = [-0.1, -0.1, -2, -0.5, -0.5]
+ymax_list  = [8.5, 8.5, 8.5, 8.5, 8.5]
 #
-for j in range(0,5): #Extrinsic features 0 to 4
+for j in range(0,6): #Extrinsic features 0 to 6
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
@@ -164,7 +167,7 @@ for j in range(0,5): #Extrinsic features 0 to 4
 #********************************************************;
 #  3b. SR vs. extrinsic factors for 9 compounds and sum  ;
 #********************************************************;
-for j in range(0,5): #Extrinsic features 0 to 12
+for j in range(0,6): #Extrinsic features 0 to 6
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
@@ -193,7 +196,7 @@ for j in range(0,5): #Extrinsic features 0 to 12
 #*****************************************************************;
 #  3c. SR vs. extrinsic factors for 9 compounds and sum (labels)  ;
 #*****************************************************************;
-for j in range(0,5): #Extrinsic features 0 to 4
+for j in range(0,6): #Extrinsic features 0 to 6
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)

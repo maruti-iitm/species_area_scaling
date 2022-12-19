@@ -1,10 +1,17 @@
 # Get species richness vs. EPAW-C data (important features scaling laws)
 # 
-# 1. Percent forest cover loss - PctFrstLoss --> 34
-# 2. Precipitation gradient - SN             --> 84
-# 3. PctNonAgIntrodManagVegCat               --> 92
-# 4. Mean annual stream temperature -- MAST  --> 115
-# 5. Mean summer stream temperature - MSST   --> 126
+#       34  --> 'Percent forest cover loss - PctFrstLoss'
+#       52  --> 'Mean hydraulic conductivity in catchment -- HydrlCondCat'
+#       54  --> 'Mean imperviousness of anthropogenic surfaces within catchment - PctImp'
+#       82  --> 'Precipitation gradient - SN'
+#       92  --> 'Open water land cover (in a catchment) - PctOw'
+#       97  --> 'Developed catchment area (Land use) - PctUrbOp'
+#       114 --> 'Woody wetland land cover -- PctWdWet'
+#       115 --> 'PctNonAgIntrodManagVegCat'
+#       119 --> '30 year mean normal temperature - Tmean'
+#       122 --> '30 year max normal temperature - Tmax'
+#       126 --> 'Mean annual stream temperature -- MAST'
+#       131 --> 'Mean summer stream temperature - MSST'
 #
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
@@ -90,29 +97,36 @@ acc_ftrs_list  = df_acc.columns.to_list() #137
 sr_arr         = df_sr.values #(54, 10)
 acc_arr        = df_acc.values #(54, 137)
 #
-epaacc_index_list = [34, 82, 92, 115, 126, 131] #5 -- imp features
+epaacc_index_list = [34, 52, 54, 82, 92, 97, 114, 115, 119, 122, 126, 131] #12
 epaacc_ftrs_list  = ['Percent forest cover loss - PctFrstLoss', \
+                        'Mean hydraulic conductivity in catchment -- HydrlCondCat', \
+                        'Mean imperviousness of anthropogenic surfaces within catchment - PctImp', \
                         'Precipitation gradient - SN', \
+                        'Open water land cover (in a catchment) - PctOw', \
+                        'Developed catchment area (Land use) - PctUrbOp', \
+                        'Woody wetland land cover -- PctWdWet', \
                         'PctNonAgIntrodManagVegCat', \
+                        '30 year mean normal temperature - Tmean', \
+                        '30 year max normal temperature - Tmax', \
                         'Mean annual stream temperature -- MAST', \
-                        'Mean summer stream temperature - MSST'] #5
+                        'Mean summer stream temperature - MSST'] #12
 #
-hs_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 6)
+hs_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 12)
 #
-marker_list    = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^'] #10
-color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange'] #10
+marker_list    = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^', 'o', 'v'] #12
+color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange', 'tab:olive', 'crimson'] #12
 
 #*****************************************************************;
 #  2. log(SR) vs. log(extrinsic factors) for 9 compounds and sum  ;
 #      log(SR) = log(b) + z*log(EF)                               ;
 #*****************************************************************;
-logb_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
-logz_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
+logb_list = np.zeros((len(comp_list), 12), dtype = float) #(10,12)
+logz_list = np.zeros((len(comp_list), 12), dtype = float) #(10,12)
 #
-b_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
-z_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
+b_list    = np.zeros((len(comp_list), 12), dtype = float) #(10,12)
+z_list    = np.zeros((len(comp_list), 12), dtype = float) #(10,12)
 #
-for j in range(0,5): #Top-5 features
+for j in range(0,12): #Top-12 features
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
         ind        = np.argwhere(~(hs_arr[:,j] == 0))[:,0]
         #
@@ -134,19 +148,18 @@ for j in range(0,5): #Top-5 features
 #********************************************************************;
 #  3a. log(SR) vs. log10(extrinsic factors) for 9 compounds and sum  ;
 #********************************************************************;
-imp_ftrs_list  = ['PctFrstLoss', 'PrecipGrad', 'PctNonAgIntrodManagVegCat', \
-                        'MeanAnnStrmTemp', 'MeanSummerStrmTemp']
+imp_ftrs_list  = epaacc_ftrs_list
 #
 ymin_list  = [-0.1, -2, -0.5, -0.5]
 ymax_list  = [8.5, 8.5, 8.5, 8.5]
 #
-for j in range(0,5): #Extrinsic features 0 to 4
+for j in range(0,12): #Extrinsic features 0 to 12
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
-    ax.set_xlabel(epaacc_ftrs_list[j] + ' (in log10)', fontsize = 12, fontweight = 'bold')
+    ax.set_xlabel(epaacc_ftrs_list[j] + ' (in log10)', fontsize = 6, fontweight = 'bold')
     ax.set_ylabel('Species richness (in log10)', fontsize = 12, fontweight = 'bold')
-    plt.title('log(SR) vs. log(' + epaacc_ftrs_list[j] + ')')
+    plt.title('log(SR) vs. log(' + epaacc_ftrs_list[j] + ')', fontsize = 6)
     #ax.set_ylim([ymin_list[j], ymax_list[j]])
     #
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
@@ -171,13 +184,13 @@ for j in range(0,5): #Extrinsic features 0 to 4
 #********************************************************;
 #  3b. SR vs. extrinsic factors for 9 compounds and sum  ;
 #********************************************************;
-for j in range(0,5): #Extrinsic features 0 to 4
+for j in range(0,12): #Extrinsic features 0 to 12
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
-    ax.set_xlabel(epaacc_ftrs_list[j], fontsize = 12, fontweight = 'bold')
+    ax.set_xlabel(epaacc_ftrs_list[j], fontsize = 6, fontweight = 'bold')
     ax.set_ylabel('Species richness', fontsize = 12, fontweight = 'bold')
-    plt.title('SR vs. ' + epaacc_ftrs_list[j])
+    plt.title('SR vs. ' + epaacc_ftrs_list[j], fontsize = 6)
     #ax.set_ylim([ymin_list[j], ymax_list[j]])
     #
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
@@ -200,7 +213,7 @@ for j in range(0,5): #Extrinsic features 0 to 4
 #*****************************************************************;
 #  3c. SR vs. extrinsic factors for 9 compounds and sum (labels)  ;
 #*****************************************************************;
-for j in range(0,5): #Extrinsic features 0 to 4
+for j in range(0,12): #Extrinsic features 0 to 12
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
     ax  = fig.add_subplot(111)
