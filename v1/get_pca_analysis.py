@@ -16,6 +16,11 @@
 #
 # https://stackoverflow.com/questions/45333733/plotting-pca-output-in-scatter-plot-whilst-colouring-according-to-to-label-pytho
 # AUTHOR -- Maruti Kumar Mudunuru
+#  Loadings:
+#    https://www.nxn.se/valent/loadings-with-scikit-learn-pca
+#    https://stackoverflow.com/questions/21217710/factor-loadings-using-sklearn
+#    https://stackoverflow.com/questions/39216897/plot-pca-loadings-and-loading-in-biplot-in-sklearn-like-rs-autoplot
+
 
 import os
 import pandas as pd
@@ -48,6 +53,7 @@ sr_arr         = df_sr.values #(54, 10) #species richness
 sd_arr         = df_sd.values #(54, 10) #shannon diversity
 wdrs_arr       = df_wdrs.values[:,0:9] #(54, 9) #ftrs
 wdrs_id_list   = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] #wdrs ids that are non-NaNs
+wdrs_ftrs_id_list = [wdrs_ftrs_list[i] for i in wdrs_id_list] #9
 
 #**********************************************;
 #  1b. Set paths for .csv files (StreamStats)  ;
@@ -59,6 +65,7 @@ strm_ftrs_list = df_strmstats.columns.to_list() #8
 #
 strm_arr       = df_strmstats.values[:,0:3] #(54, 3) #ftrs
 strm_id_list   = [0, 1, 2] #strm ids that are non-NaNs
+strm_ftrs_id_list = [strm_ftrs_list[i] for i in strm_id_list] #3
 
 #*********************************************;
 #  1c. Set paths for .csv files (HYDROSHEDS)  ;
@@ -153,6 +160,11 @@ num_ftrs          = wdrs_arr.shape[1] + strm_arr.shape[1] + \
                     epaw_arr.shape[1] #54
 full_arr          = np.zeros((num_samples, num_ftrs), dtype = float)
 #
+ftrs_list         = [wdrs_ftrs_id_list, strm_ftrs_id_list, \
+                        hydrosheds_ftrs_list, epaacc_ftrs_list, \
+                        epaacw_ftrs_list] #54
+features_list     = list(itertools.chain.from_iterable(ftrs_list)) #54
+#
 full_arr[:,0:9]   = copy.deepcopy(wdrs_arr) #whondrs #9
 full_arr[:,9:12]  = copy.deepcopy(strm_arr) #streamstats #3
 full_arr[:,12:20] = copy.deepcopy(hs_arr) #hydrosheds #8
@@ -191,6 +203,11 @@ X_pca_ss_t = pca_ftrs.fit_transform(X_ss_t) #(54, 2)
 pca_samples = PCA(n_components=2, random_state = 1337)
 pca_samples.fit(X_ss) #PCA on samples
 X_pca_ss    = pca_samples.fit_transform(X_ss) #(54, 2)
+scores      = copy.deepcopy(X_pca_ss[:,:2]) #(54, 2)
+loadings    = pca_samples.components_[:2].T #(54, 2)
+pvars       = pca_samples.explained_variance_ratio_[:2] * 100 #(2,)
+arrows_list = loadings * np.abs(scores).max(axis=0)
+arrows_list = loadings * np.ptp(scores, axis=0)
 
 #********************************************************************************************;
 #  3a. Plot PCA components with labels = WHONDRS, StreamStats, HYDROSHEDS, EPA-C, and EPA-W  ;
@@ -248,3 +265,31 @@ ax.scatter(X_pca_ss[:,0], X_pca_ss[:,1], c = 'k', s = 25, edgecolor = ['none'])
 fig.tight_layout()
 plt.savefig(path + 'PCA_all/PCA_samples_all.png', dpi = 300)
 plt.close(fig)
+
+#********************************************************************************************;
+#  3c. Plot PCA components with labels = WHONDRS, StreamStats, HYDROSHEDS, EPA-C, and EPA-W  ;
+#      (Variation across data samples)                                                       ;
+#********************************************************************************************;
+stride = 4
+#
+for k in list(range(0,num_ftrs,stride)):
+    legend_properties = {'weight':'bold'}
+    fig = plt.figure(figsize=(5,5))
+    plt.rc('legend', fontsize = 8)
+    ax  = fig.add_subplot(111)
+    ax.set_xlabel('PC 1 (%.2f%%)' % (pca_samples.explained_variance_ratio_[0]*100))
+    ax.set_ylabel('PC 2 (%.2f%%)' % (pca_samples.explained_variance_ratio_[1]*100))
+    ax.scatter(X_pca_ss[:,0], X_pca_ss[:,1], c = 'k', s = 25, edgecolor = ['none'])
+    #
+    #empirical formula to determine arrow width
+    width = -0.0075 * np.min([np.subtract(*plt.xlim()), np.subtract(*plt.ylim())])
+    #
+    # features as arrows
+    for feature, arrow in zip(features_list[k:k+stride], arrows_list[k:k+stride]):
+        ax.arrow(0, 0, *arrow, color='k', alpha=0.5, width=width, ec='none',
+                  length_includes_head=True)
+        ax.text(*(arrow * 1.05), feature,
+                 ha='center', va='center', fontsize = 'xx-small')
+    fig.tight_layout()
+    plt.savefig(path + 'PCA_all/PCA_samples_all_loadings_' + str(k) + '.png', dpi = 300)
+    plt.close(fig)
