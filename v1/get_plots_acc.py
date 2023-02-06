@@ -1,22 +1,24 @@
 # Get species richness vs. EPAWaters acc data
 # Get shannon diversity vs. EPAWaters acc data
 #
-# 34 0.275 0.307 'Percent forest cover loss - PctFrstLoss'
-# 52 0.243 -0.0237 'Mean hydraulic conductivity in catchment -- HydrlCondCat'
-# 54 0.259 0.343 'Mean imperviousness of anthropogenic surfaces within catchment - PctImp'
-# 82 0.212 0.181 'Precipitation gradient - SN'
-# 92 0.235 0.378 'Open water land cover (in a catchment) - PctOw'
-# 97 0.283 0.289 'Developed catchment area (Land use) - PctUrbOp'
-# 114 0.249 0.27 'Woody wetland land cover -- PctWdWet'
-# 115 0.225 0.28 'PctNonAgIntrodManagVegCat'
-# 119 0.308 0.326 '30 year mean normal temperature - Tmean'
-# 122 0.281 0.283 '30 year max normal temperature - Tmax'
-# 126 0.44 0.426 'Mean annual stream temperature -- MAST'
-# 131 0.414 0.437 'Mean summer stream temperature - MSST'
+# Important features identified include (dataIndex --> FeatureName):
+#	34  --> 0.275 0.307 'Percent forest cover loss - PctFrstLoss'
+#   52  --> 0.243 -0.0237 'Mean hydraulic conductivity in catchment -- HydrlCondCat'
+#   54  --> 0.259 0.343 'Mean imperviousness of anthropogenic surfaces within catchment - PctImp'
+#   82  --> 0.212 0.181 'Precipitation gradient - SN'
+#   92  --> 0.235 0.378 'Open water land cover (in a catchment) - PctOw'
+#   97  --> 0.283 0.289 'Developed catchment area (Land use) - PctUrbOp'
+#   114 --> 0.249 0.27 'Woody wetland land cover -- PctWdWet'
+#   115 --> 0.225 0.28 'PctNonAgIntrodManagVegCat'
+#   119 --> 0.308 0.326 '30 year mean normal temperature - Tmean'
+#   122 --> 0.281 0.283 '30 year max normal temperature - Tmax'
+#   126 --> 0.44 0.426 'Mean annual stream temperature -- MAST'
+#   131 --> 0.414 0.437 'Mean summer stream temperature - MSST'
 #
 # Process species richness and shannon diversity for scaling laws, feature importance, and PCA analysis
 # AUTHOR -- Maruti Kumar Mudunuru
 
+import os
 import pandas as pd
 import numpy as np
 import copy
@@ -32,6 +34,7 @@ np.set_printoptions(precision=2)
 #******************************;
 #  1. Set pathsfor .csv files  ;
 #******************************;
+#path           = os.getcwd() + '/'
 path           = '/Users/mudu605/OneDrive - PNNL/Desktop/Papers_PNNL/18_Crowd_ML/Python_Scripts/0-AlphaDiversity/'
 #
 df_sr          = pd.read_csv(path + "Inputs_Outputs_v4/1_WAT_SR_54s_11f.csv", index_col = 1).iloc[:,1:] #(54, 10)

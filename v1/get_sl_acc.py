@@ -1,17 +1,18 @@
 # Get species richness vs. EPAW-C data (important features scaling laws)
 # 
-#       34  --> 'Percent forest cover loss - PctFrstLoss'
-#       52  --> 'Mean hydraulic conductivity in catchment -- HydrlCondCat'
-#       54  --> 'Mean imperviousness of anthropogenic surfaces within catchment - PctImp'
-#       82  --> 'Precipitation gradient - SN'
-#       92  --> 'Open water land cover (in a catchment) - PctOw'
-#       97  --> 'Developed catchment area (Land use) - PctUrbOp'
-#       114 --> 'Woody wetland land cover -- PctWdWet'
-#       115 --> 'PctNonAgIntrodManagVegCat'
-#       119 --> '30 year mean normal temperature - Tmean'
-#       122 --> '30 year max normal temperature - Tmax'
-#       126 --> 'Mean annual stream temperature -- MAST'
-#       131 --> 'Mean summer stream temperature - MSST'
+# Important features identified include (dataIndex --> FeatureName):
+#   34  --> 0.275 0.307 'Percent forest cover loss - PctFrstLoss'
+#   52  --> 0.243 -0.0237 'Mean hydraulic conductivity in catchment -- HydrlCondCat'
+#   54  --> 0.259 0.343 'Mean imperviousness of anthropogenic surfaces within catchment - PctImp'
+#   82  --> 0.212 0.181 'Precipitation gradient - SN'
+#   92  --> 0.235 0.378 'Open water land cover (in a catchment) - PctOw'
+#   97  --> 0.283 0.289 'Developed catchment area (Land use) - PctUrbOp'
+#   114 --> 0.249 0.27 'Woody wetland land cover -- PctWdWet'
+#   115 --> 0.225 0.28 'PctNonAgIntrodManagVegCat'
+#   119 --> 0.308 0.326 '30 year mean normal temperature - Tmean'
+#   122 --> 0.281 0.283 '30 year max normal temperature - Tmax'
+#   126 --> 0.44 0.426 'Mean annual stream temperature -- MAST'
+#   131 --> 0.414 0.437 'Mean summer stream temperature - MSST'
 #
 # AUTHOR -- Maruti Kumar Mudunuru
 #   https://stackoverflow.com/questions/3433486/how-to-do-exponential-and-logarithmic-curve-fitting-in-python-i-found-only-poly
@@ -111,7 +112,14 @@ epaacc_ftrs_list  = ['Percent forest cover loss - PctFrstLoss', \
                         'Mean annual stream temperature -- MAST', \
                         'Mean summer stream temperature - MSST'] #12
 #
-hs_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 12)
+for i in range(0,len(epaacc_index_list)): #12
+    countx = epaacc_index_list[i]
+    print(countx, acc_ftrs_list[countx], epaacc_ftrs_list[i])
+#
+#hs_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 12)
+hs_arr           = np.zeros((acc_arr.shape[0],len(epaacc_index_list)), dtype = float) #(54, 12)
+for i in range(0,len(epaacc_index_list)): #12
+    hs_arr[:,i] = copy.deepcopy(acc_arr[:,epaacc_index_list[i]])
 #
 marker_list    = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^', 'o', 'v'] #12
 color_list     = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange', 'tab:olive', 'crimson'] #12
