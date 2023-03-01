@@ -274,3 +274,72 @@ for j in range(0,len(epaacw_index_list)): #Extrinsic features 0 to 24
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACW/Scaling_Laws/LegendSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
     plt.close(fig)
+
+#*********************************************************************;
+#  4a. Raw and normalized exponents for 9 compounds and sum (labels)  ;
+#*********************************************************************;
+se_list      = np.zeros((len(comp_list), len(epaacw_index_list)), dtype = float) #(10,24)
+cvalue_list  = np.zeros((len(comp_list), len(epaacw_index_list)), dtype = float) #(10,24)
+#
+for j in range(0,len(epaacw_index_list)): #Extrinsic features 0 to 24
+    for i in range(0,len(comp_list)): #Compounds i = 0 to 10
+        popt, pval = get_pvalue(i,j)
+        print(imp_ftrs_list[j], comp_list[i], popt[1])
+        #
+        cvalue_list[i,j] = popt[0]
+        se_list[i,j]     = popt[1]
+#
+norm_cvalue_list = copy.deepcopy(cvalue_list/np.max(cvalue_list, axis = 0))
+norm_se_list     = copy.deepcopy(se_list/np.max(se_list, axis = 0))
+
+#*************************************************************************************;
+#  4b. Bar plots (Normalized c-value and exponents) for 9 compounds and sum (labels)  ;
+#*************************************************************************************;
+for j in range(0,len(epaacw_index_list)): #Extrinsic features 0 to 24
+    legend_properties = {'weight':'bold'}
+    fig = plt.figure(figsize=(12,5))
+    ax  = fig.add_subplot(111)
+    ax.set_xlabel('Compound type', fontsize = 12, fontweight = 'bold')
+    ax.set_ylabel('Normalized exponent (z/z-max)', fontsize = 12, fontweight = 'bold')
+    plt.title('Normalized exponent vs. Compound type for ' + imp_ftrs_list[j])
+    ax.bar(comp_list, norm_se_list[:,j], color = color_list)
+    fig.tight_layout()
+    plt.savefig(path + 'Plots_EPAWaters_ACW/Scaling_Laws/Bar_NormExp_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.close(fig)
+    #
+    legend_properties = {'weight':'bold'}
+    fig = plt.figure(figsize=(12,5))
+    ax  = fig.add_subplot(111)
+    ax.set_xlabel('Compound type', fontsize = 12, fontweight = 'bold')
+    ax.set_ylabel('Normalized c-value (c/c-max)', fontsize = 12, fontweight = 'bold')
+    plt.title('Normalized c-value vs. Compound type for ' + imp_ftrs_list[j])
+    ax.bar(comp_list, norm_cvalue_list[:,j], color = color_list)
+    fig.tight_layout()
+    plt.savefig(path + 'Plots_EPAWaters_ACW/Scaling_Laws/Bar_NormCval_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.close(fig)    
+
+#******************************************************************************;
+#  4c. Bar plots (Raw c-value and exponents) for 9 compounds and sum (labels)  ;
+#******************************************************************************;
+for j in range(0,len(epaacw_index_list)): #Extrinsic features 0 to 24
+    legend_properties = {'weight':'bold'}
+    fig = plt.figure(figsize=(12,5))
+    ax  = fig.add_subplot(111)
+    ax.set_xlabel('Compound type', fontsize = 12, fontweight = 'bold')
+    ax.set_ylabel('Raw exponent (z-value)', fontsize = 12, fontweight = 'bold')
+    plt.title('Raw exponent vs. Compound type for ' + imp_ftrs_list[j])
+    ax.bar(comp_list, se_list[:,j], color = color_list)
+    fig.tight_layout()
+    plt.savefig(path + 'Plots_EPAWaters_ACW/Scaling_Laws/Bar_RawExp_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.close(fig)
+    #
+    legend_properties = {'weight':'bold'}
+    fig = plt.figure(figsize=(12,5))
+    ax  = fig.add_subplot(111)
+    ax.set_xlabel('Compound type', fontsize = 12, fontweight = 'bold')
+    ax.set_ylabel('Raw c-value', fontsize = 12, fontweight = 'bold')
+    plt.title('Raw c-value vs. Compound type for ' + imp_ftrs_list[j])
+    ax.bar(comp_list, cvalue_list[:,j], color = color_list)
+    fig.tight_layout()
+    plt.savefig(path + 'Plots_EPAWaters_ACW/Scaling_Laws/Bar_RawCval_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.close(fig) 
