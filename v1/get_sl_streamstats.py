@@ -196,6 +196,11 @@ for j in range(0,6): #Extrinsic features 0 to 6
 #*****************************************************************;
 #  3c. SR vs. extrinsic factors for 9 compounds and sum (labels)  ;
 #*****************************************************************;
+b_arr    = np.zeros((len(comp_list),6), dtype = float) #(10,6)
+se_arr   = np.zeros((len(comp_list),6), dtype = float) #(10,6)
+pv_b_arr = np.zeros((len(comp_list),6), dtype = float) #(10,6)
+pv_z_arr = np.zeros((len(comp_list),6), dtype = float) #(10,6)
+#
 for j in range(0,6): #Extrinsic features 0 to 6
     legend_properties = {'weight':'bold'}
     fig = plt.figure()
@@ -212,10 +217,24 @@ for j in range(0,6): #Extrinsic features 0 to 6
                 label = comp_list[i] + ',  SE = ' + str('{0:.3g}'.format(popt[1])) + \
                 ',  pv-b = ' + str('{0:.3g}'.format(pval[0])) + \
                 ',  pv-z = ' + str('{0:.3g}'.format(pval[1])))
+        b_arr[i,j]    = popt[0]
+        se_arr[i,j]   = popt[1]
+        pv_b_arr[i,j] = pval[0]
+        pv_z_arr[i,j] = pval[1]
     ax.legend(bbox_to_anchor=(1.05, 1.0), loc = 'upper left')
     fig.tight_layout()
     plt.savefig(path + 'Plots_StreamStats/Scaling_Laws/LegendSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
     plt.close(fig)
+
+df_b_arr    = pd.DataFrame(b_arr, index = comp_list, columns = imp_ftrs_list) #b
+df_se_arr   = pd.DataFrame(se_arr, index = comp_list, columns = imp_ftrs_list) #z
+df_pv_b_arr = pd.DataFrame(pv_b_arr, index = comp_list, columns = imp_ftrs_list) #p-value for b
+df_pv_z_arr = pd.DataFrame(pv_z_arr, index = comp_list, columns = imp_ftrs_list) #p-value for z
+#
+df_b_arr.to_csv('Plots_StreamStats/Scaling_Laws/b_array.csv')
+df_se_arr.to_csv('Plots_StreamStats/Scaling_Laws/scaling_exponent_array.csv')
+df_pv_b_arr.to_csv('Plots_StreamStats/Scaling_Laws/p-value_b_array.csv')
+df_pv_z_arr.to_csv('Plots_StreamStats/Scaling_Laws/p-value_scaling_expoenent_array.csv')
 
 #*********************************************************************;
 #  4a. Raw and normalized exponents for 9 compounds and sum (labels)  ;
