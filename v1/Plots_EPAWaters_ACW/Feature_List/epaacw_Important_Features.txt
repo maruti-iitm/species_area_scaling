@@ -1,0 +1,25 @@
+#   Important features identified in EPA-ACW dataset include (dataIndex --> FeatureName):
+#       71  --> 0.246 0.205 PctNonCarbResidWs
+#       112 --> 0.254 0.578 PctUrbMd2011Ws
+#       31  --> 0.264 0.299 PctFrstLoss2003Ws
+#       13  --> 0.281 0.372 DamNrmStorM3Ws
+#       2   --> 0.282 0.273 DRNAREA
+#       12  --> 0.285 0.381 DamNIDStorM3Ws
+#       54  --> 0.286 0.547 PctImp2006Ws
+#       94  --> 0.288 0.575 PctUrbHi2006Ws
+#       78  --> 0.29 0.324 NABD_NrmStorM3Ws
+#       77  --> 0.293 0.334 NABD_NIDStorM3Ws
+#       37  --> 0.294 0.418 PctFrstLoss2009Ws
+#       110 --> 0.301 0.56 PctUrbHi2011Ws
+#       111 --> 0.306 0.559 PctUrbLo2011Ws
+#       122 --> 0.312 0.323 Tmax8110Ws
+#       115 --> 0.325 0.43 PctNonAgIntrodManagVegWs
+#       123 --> 0.337 0.346 Tmean8110Ws
+#       75  --> 0.337 0.407 MineDensWs
+#       76  --> 0.351 0.345 NABD_DensWs
+#       15  --> 0.358 0.615 NPDESDensWs
+#       92  --> 0.37 0.357 PctOw2006Ws
+#       113 --> 0.376 0.419 PctUrbOp2011Ws
+#       11  --> 0.393 0.416 DamDensWs
+#       16  --> 0.395 0.426 SuperfundDensWs
+#       17  --> 0.421 0.611 TRIDensWs

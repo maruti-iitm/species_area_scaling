@@ -11,6 +11,16 @@
 #   5. Pearson correlation
 #   6. Spearsman correlation
 #
+#  StreamStats features:
+#       'long', 
+#       'lat', 
+#       'DRNAREA', 
+#       'ELEV', 
+#       'PRECIP', 
+#       'ELEVMAX', 
+#       'MINBELEV', 
+#       'FOREST'
+#
 # AUTHOR -- Maruti Kumar Mudunuru
 
 import os
@@ -295,4 +305,26 @@ for i in range(7): # Loop over data dimensions and create text annotations.
 ax.set_title("Feature importance (normalized) -- species richness vs. StreamStats data features")
 fig.tight_layout()
 plt.savefig(path + 'Plots_StreamStats/Z_imp_SR_vs_StreamStats_ftrs.png')
+plt.savefig(path + 'Plots_StreamStats/SVG_figs/Z_imp_SR_vs_StreamStats_ftrs.svg')
+plt.savefig(path + 'Plots_StreamStats/SVG_figs/Z_imp_SR_vs_StreamStats_ftrs.pdf')
 plt.close(fig)
+
+#*********************************************************************************************;
+#  3e. Min, Max, Mean, and STD for F-test, MI, RF, SHAPley, pcorr, scorr feature importances  ;
+#      (Each one is normalized from 0 to 1)                                                   ;
+#*********************************************************************************************;
+temp_data             = copy.deepcopy(ftrs_imp[:-1,:]) #(6, 8)
+mean_ftrs_imp         = np.mean(temp_data, axis = 0) #(8,)
+std_ftrs_imp          = np.std(temp_data, axis = 0) #(8,)
+min_ftrs_imp          = np.min(temp_data, axis = 0) #(8,)
+max_ftrs_imp          = np.max(temp_data, axis = 0) #(8,)
+#
+metrics_ftrs_imp      = np.zeros((4,len(strm_ftrs_list)), dtype = float) #(4, 8)
+metrics_ftrs_imp[0,:] = copy.deepcopy(mean_ftrs_imp) #mean #(8,)
+metrics_ftrs_imp[1,:] = copy.deepcopy(std_ftrs_imp) #std #(8,)
+metrics_ftrs_imp[2,:] = copy.deepcopy(min_ftrs_imp) #min #(8,)
+metrics_ftrs_imp[3,:] = copy.deepcopy(max_ftrs_imp) #max #(8,)
+#
+row_names             = ['mean', 'std', 'min', 'max']
+df_metrics_ftrs_imp   = pd.DataFrame(metrics_ftrs_imp, columns = strm_ftrs_list, index = row_names)
+df_metrics_ftrs_imp.to_csv(path+ 'Plots_StreamStats/Feature_List/StreamStats_ftrs_min_max_mean_std.csv')

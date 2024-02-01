@@ -1,0 +1,9 @@
+#   Important features identified in HYDROSHEDS include (dataIndex --> FeatureName):
+#       10 --> 'Natural discharge - dis_m3_pmn'
+#       17 --> 'Inundation extent - inu_pc_slt'
+#       24 --> 'River area - ria_ha_ssu'
+#       26 --> 'River volume - riv_tc_ssu'
+#       37 --> 'Climate strata - cls_cl_smj'
+#       46 --> 'Air temp - tmp_dc_s05'
+#       73 --> 'Potential ET - pet_mm_s04'
+#       87 --> 'Actual ET - aet_mm_s04'

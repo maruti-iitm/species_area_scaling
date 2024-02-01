@@ -1,0 +1,13 @@
+#  WHONDRS important features --> A total of 12
+#       'Stream_Order'
+#       'Sediment'
+#       'US_Water.Column.Height_cm'
+#       'US_Sunlight.Access_Perc.Canopy.Cover'
+#       'MS_Water.Column.Height_cm'
+#       'MS_Sunlight.Access_Perc.Canopy.Cover'
+#       'DS_Water.Column.Height_cm'
+#       'DS_Sunlight.Access_Perc.Canopy.Cover'
+#       'SW_pH'
+#       'DO_perc.sat'
+#       'DO_mg.per.L'
+#       'SW_Temp_degC'

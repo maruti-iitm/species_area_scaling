@@ -1,0 +1,9 @@
+#  StreamStats features:
+#       'long', 
+#       'lat', 
+#       'DRNAREA', 
+#       'ELEV', 
+#       'PRECIP', 
+#       'ELEVMAX', 
+#       'MINBELEV', 
+#       'FOREST'
