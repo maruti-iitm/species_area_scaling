@@ -19,6 +19,7 @@
 # AUTHOR -- Maruti Kumar Mudunuru
 
 import os
+import math
 import pandas as pd
 import numpy as np
 import copy
@@ -28,14 +29,14 @@ from scipy.stats import pearsonr
 from scipy.stats import spearmanr
 from scipy.stats import linregress
 import itertools
+from scipy import stats
 #
 np.set_printoptions(precision=2)
 
 #******************************;
 #  1. Set pathsfor .csv files  ;
 #******************************;
-#path           = os.getcwd() + '/'
-path           = '/Users/mudu605/OneDrive - PNNL/Desktop/Papers_PNNL/18_Crowd_ML/Python_Scripts/0-AlphaDiversity/'
+path           = os.getcwd() + '/'
 #
 df_sr          = pd.read_csv(path + "Inputs_Outputs_v4/1_WAT_SR_54s_11f.csv", index_col = 1).iloc[:,1:] #(54, 10)
 df_sd          = pd.read_csv(path + "Inputs_Outputs_v4/2_WAT_SHANN_54s_11f.csv", index_col = 1).iloc[:,1:] #(54, 10)
@@ -57,9 +58,9 @@ color_small    = [['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown',
 marker_list    = list(itertools.chain.from_iterable(marker_small))
 color_list     = list(itertools.chain.from_iterable(color_small))
 
-#***********************************;
-#  2. ACC correlation coefficients  ;
-#***********************************;
+#*******************************************************;
+#  2a. ACC correlation coefficients (all 137 features)  ;
+#*******************************************************;
 for i in range(0,acc_arr.shape[1]):
 	if len(np.argwhere(np.isnan(acc_arr[:,i]))[:,0]) > 0:
 		print(i)
@@ -108,6 +109,52 @@ for i in range(0,len(correlated_count_list)):
 	print(i, correlated_count_list[i], '{0:.3g}'.format(pcorr_list[ascend_argsort_pcorr][i]), \
 		'{0:.3g}'.format(scorr_list[ascend_argsort_pcorr][i]), \
 		correlated_ftrs_list[i])
+
+#*******************************************************************************;
+#  2b. Correlation values for SR vs. extrinsic factors for 9 compounds and sum  ;
+#      (Along with p-values)                                                    ;
+#*******************************************************************************;
+full_pcorr_list        = [] 
+full_scorr_list        = []
+full_pcorr_pvalue_list = [] 
+full_scorr_pvalue_list = []
+i_name_list            = []
+j_name_list            = []
+#
+for j in range(0,len(acc_ftrs_list)): #Extrinsic features 0 to 137
+	for i in range(0,len(comp_list)): #Compounds i = 0 to 10
+		print('Comp name, Extrinsic feature = ', comp_list[i], acc_ftrs_list[j])
+		#print(np.argwhere(np.isnan(acc_arr[:,j]))[:,0])
+		ind      = np.argwhere(~np.isnan(acc_arr[:,j]))[:,0]
+		#
+		pcorr_sr, pcorr_sr_pvalue = pearsonr(acc_arr[ind,j], sr_arr[ind,i])
+		scorr_sr, scorr_sr_pvalue = spearmanr(acc_arr[ind,j], sr_arr[ind,i])
+		print('i, j, Pearsons_sr, Spearmans_sr, pcorr-p-value, scorr-p-value = ', i, j, \
+			'{0:.3g}'.format(pcorr_sr), '{0:.3g}'.format(scorr_sr), \
+			'{0:.3g}'.format(pcorr_sr_pvalue), '{0:.3g}'.format(scorr_sr_pvalue))
+		#
+		i_name_list.append(comp_list[i])
+		j_name_list.append(acc_ftrs_list[j])
+		full_pcorr_list.append(pcorr_sr)
+		full_scorr_list.append(scorr_sr)
+		full_pcorr_pvalue_list.append(pcorr_sr_pvalue)
+		full_scorr_pvalue_list.append(scorr_sr_pvalue)
+
+df_ps = pd.DataFrame({
+    'Compound_Name': i_name_list,
+    'EPA-ACC_Features': j_name_list,
+    'Pearsons_Correlation': full_pcorr_list,
+    'Spearsman_Correlation': full_pcorr_list,
+    'Pearsons_Correlation_pvalue': full_pcorr_pvalue_list,
+    'Spearsman_Correlation_pvalue': full_pcorr_pvalue_list,
+})
+
+print(df_ps)
+df_ps.to_csv(path + "Plots_EPAWaters_ACC/PS_Feature_Filtering/EPAACC_Pearson_Spearsman_Coeff_Values.csv") #[1370 rows x 6 columns]
+
+for value in full_pcorr_list:
+    if math.isnan(value):
+        print('NaN value found!')
 
 #************************************************;
 #  3. Best epaacc correlation coefficients list  ;

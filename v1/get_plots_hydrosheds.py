@@ -13,6 +13,7 @@
 # Process species richness and shannon diversity for scaling laws, feature importance, and PCA analysis
 # AUTHOR -- Maruti Kumar Mudunuru
 
+import os
 import pandas as pd
 import numpy as np
 import copy
@@ -21,13 +22,14 @@ import matplotlib.ticker as ticker
 from scipy.stats import pearsonr
 from scipy.stats import spearmanr
 from scipy.stats import linregress
+from scipy import stats
 #
 np.set_printoptions(precision=2)
 
 #******************************;
 #  1. Set pathsfor .csv files  ;
 #******************************;
-path            = '/Users/mudu605/OneDrive - PNNL/Desktop/Papers_PNNL/18_Crowd_ML/Python_Scripts/0-AlphaDiversity/'
+path            = os.getcwd() + '/'
 #
 df_sr           = pd.read_csv(path + "Inputs_Outputs_v4/1_WAT_SR_54s_11f.csv", index_col = 1).iloc[:,1:] #(54, 10)
 df_sd           = pd.read_csv(path + "Inputs_Outputs_v4/2_WAT_SHANN_54s_11f.csv", index_col = 1).iloc[:,1:] #(54, 10)
@@ -35,7 +37,7 @@ df_sd           = pd.read_csv(path + "Inputs_Outputs_v4/2_WAT_SHANN_54s_11f.csv"
 df_huc12        = pd.read_csv(path + "Inputs_Outputs_v4/8_Hydrosheds_huc12_54s_294f.csv", index_col = 1).iloc[:,1:-1] #(54, 292)
 #
 comp_list       = df_sr.columns.to_list() #10
-huc12_ftrs_list = df_huc12.columns.to_list() #12
+huc12_ftrs_list = df_huc12.columns.to_list() #292
 #
 sr_arr          = df_sr.values #(54, 10)
 sd_arr          = df_sd.values #(54, 10)
@@ -44,9 +46,9 @@ huc12_arr       = df_huc12.values #(54, 12)
 marker_list     = ['o', 'v', '8', 's', 'p', '*', 'h', '+', 'x', '^'] #10
 color_list      = ['b', 'k', 'r', 'c', 'm', 'g', 'y', 'tab:purple', 'tab:brown', 'tab:orange'] #10
 
-#******************************************;
-#  2. Hydrosheds correlation coefficients  ;
-#******************************************;
+#**************************************************************;
+#  2a. Hydrosheds correlation coefficients (all 292 features)  ;
+#**************************************************************;
 pcorr_list = []
 scorr_list = []
 count_list = []
@@ -81,6 +83,48 @@ for i in range(0,len(correlated_count_list)):
 	print(i, correlated_count_list[i], '{0:.3g}'.format(pcorr_list[ascend_argsort_pcorr][i]), \
 		'{0:.3g}'.format(scorr_list[ascend_argsort_pcorr][i]), \
 		correlated_ftrs_list[i])
+
+#*******************************************************************************;
+#  2b. Correlation values for SR vs. extrinsic factors for 9 compounds and sum  ;
+#      (Along with p-values)                                                    ;
+#*******************************************************************************;
+full_pcorr_list        = [] 
+full_scorr_list        = []
+full_pcorr_pvalue_list = [] 
+full_scorr_pvalue_list = []
+i_name_list            = []
+j_name_list            = []
+#
+for j in range(0,len(huc12_ftrs_list)): #Extrinsic features 0 to 292
+	for i in range(0,len(comp_list)): #Compounds i = 0 to 10
+		print('Comp name, Extrinsic feature = ', comp_list[i], huc12_ftrs_list[j])
+		#print(np.argwhere(np.isnan(huc12_arr[:,j]))[:,0])
+		ind      = np.argwhere(~np.isnan(huc12_arr[:,j]))[:,0]
+		#
+		pcorr_sr, pcorr_sr_pvalue = pearsonr(huc12_arr[ind,j], sr_arr[ind,i])
+		scorr_sr, scorr_sr_pvalue = spearmanr(huc12_arr[ind,j], sr_arr[ind,i])
+		print('i, j, Pearsons_sr, Spearmans_sr, pcorr-p-value, scorr-p-value = ', i, j, \
+			'{0:.3g}'.format(pcorr_sr), '{0:.3g}'.format(scorr_sr), \
+			'{0:.3g}'.format(pcorr_sr_pvalue), '{0:.3g}'.format(scorr_sr_pvalue))
+		#
+		i_name_list.append(comp_list[i])
+		j_name_list.append(huc12_ftrs_list[j])
+		full_pcorr_list.append(pcorr_sr)
+		full_scorr_list.append(scorr_sr)
+		full_pcorr_pvalue_list.append(pcorr_sr_pvalue)
+		full_scorr_pvalue_list.append(scorr_sr_pvalue)
+
+df_ps = pd.DataFrame({
+    'Compound_Name': i_name_list,
+    'HYDROSHEDS_Features': j_name_list,
+    'Pearsons_Correlation': full_pcorr_list,
+    'Spearsman_Correlation': full_pcorr_list,
+    'Pearsons_Correlation_pvalue': full_pcorr_pvalue_list,
+    'Spearsman_Correlation_pvalue': full_pcorr_pvalue_list,
+})
+
+print(df_ps)
+df_ps.to_csv(path + "Plots_HYDROSHEDS/PS_Feature_Filtering/HYDROSHEDS_Pearson_Spearsman_Coeff_Values.csv") #[2920 rows x 6 columns]
 
 #****************************************************;
 #  3. Best hydrosheds correlation coefficients list  ;
