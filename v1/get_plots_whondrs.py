@@ -177,9 +177,9 @@ df_ps = pd.DataFrame({
     'Compound_Name': i_name_list,
     'WHONDRS_Features': j_name_list,
     'Pearsons_Correlation': full_pcorr_list,
-    'Spearsman_Correlation': full_pcorr_list,
+    'Spearsman_Correlation': full_scorr_list,
     'Pearsons_Correlation_pvalue': full_pcorr_pvalue_list,
-    'Spearsman_Correlation_pvalue': full_pcorr_pvalue_list,
+    'Spearsman_Correlation_pvalue': full_scorr_pvalue_list,
 })
 
 print(df_ps)
