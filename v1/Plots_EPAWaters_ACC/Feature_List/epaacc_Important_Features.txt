@@ -1,13 +1,28 @@
 #   Important features identified in EPA-ACC dataset include (dataIndex --> FeatureName):
-#       34  --> 0.275 0.307 'Percent forest cover loss - PctFrstLoss'
-#       52  --> 0.243 -0.0237 'Mean hydraulic conductivity in catchment -- HydrlCondCat'
-#       54  --> 0.259 0.343 'Mean imperviousness of anthropogenic surfaces within catchment - PctImp'
-#       82  --> 0.212 0.181 'Precipitation gradient - SN'
-#       92  --> 0.235 0.378 'Open water land cover (in a catchment) - PctOw'
-#       97  --> 0.283 0.289 'Developed catchment area (Land use) - PctUrbOp'
-#       114 --> 0.249 0.27 'Woody wetland land cover -- PctWdWet'
-#       115 --> 0.225 0.28 'PctNonAgIntrodManagVegCat'
-#       119 --> 0.308 0.326 '30 year mean normal temperature - Tmean'
-#       122 --> 0.281 0.283 '30 year max normal temperature - Tmax'
-#       126 --> 0.44 0.426 'Mean annual stream temperature -- MAST'
-#       131 --> 0.414 0.437 'Mean summer stream temperature - MSST'
+#       34  --> 0.275 0.307 'Percent forest cover loss - PctFrstLoss' --> 'PctFrstLoss2006Cat'
+#       52  --> 0.243 -0.0237 'Mean hydraulic conductivity in catchment --> HydrlCondCat'
+#       54  --> 0.259 0.343 'Mean imperviousness of anthropogenic surfaces within catchment - PctImp' --> 'PctImp2006Cat'
+#       82  --> 0.212 0.181 'Precipitation gradient - SN' --> 'SN_2008Cat'
+#       92  --> 0.235 0.378 'Open water land cover (in a catchment) - PctOw' --> 'PctOw2006Cat'
+#       97  --> 0.283 0.289 'Developed catchment area (Land use) - PctUrbOp' --> 'PctUrbOp2006Cat'
+#       114 --> 0.249 0.27 'Woody wetland land cover -- PctWdWet' --> 'PctWdWet2011Cat'
+#       115 --> 0.225 0.28 'PctNonAgIntrodManagVegCat' --> 'PctNonAgIntrodManagVegCat'
+#       119 --> 0.308 0.326 '30 year mean normal temperature - Tmean' --> 'Tmean08Cat'
+#       122 --> 0.281 0.283 '30 year max normal temperature - Tmax' --> 'Tmax8110Cat'
+#       126 --> 0.44 0.426 'Mean annual stream temperature -- MAST' --> 'MAST_2013'
+#       131 --> 0.414 0.437 'Mean summer stream temperature - MSST' --> 'MSST_2014'
+
+
+
+'PctFrstLoss2006Cat',
+'HydrlCondCat',
+'PctImp2006Cat',
+'SN_2008Cat',
+'PctOw2006Cat',
+'PctUrbOp2006Cat',
+'PctWdWet2011Cat',
+'PctNonAgIntrodManagVegCat',
+'Tmean08Cat',
+'Tmax8110Cat',
+'MAST_2013',
+'MSST_2014'

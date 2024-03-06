@@ -128,9 +128,9 @@ for i in range(0,len(correlated_count_list)):
         '{0:.3g}'.format(scorr_list[ascend_argsort_pcorr][i]), \
         correlated_ftrs_list[i])
 
-#************************************************;
-#  3. Best epaacw correlation coefficients list  ;
-#************************************************;
+#*************************************************;
+#  3a. Best epaacw correlation coefficients list  ;
+#*************************************************;
 epaacw_index_list = [71, 112, 13, 2, 12, 54, 78, 77, 37, 110, 111, 122, 115, 123, 75, 76, 15, 92, 113, 11, 16, 17] #22
 epaacw_ftrs_list  = ['PctNonCarbResidWs',
                         'PctUrbMdWs',
@@ -159,6 +159,12 @@ epaw_arr          = copy.deepcopy(acw_arr[:,epaacw_index_list]) #(54, 22)
 #
 X                 = copy.deepcopy(epaw_arr) #(54, 22)
 y                 = copy.deepcopy(sr_arr) #(54, 10)
+
+#**************************************************************;
+#  3b. Best epaacw correlation coefficients column names list  ;
+#**************************************************************;
+column_names = df_acw.columns.tolist()
+reduced_col_names_list = [column_names[i] for i in epaacw_index_list]
 
 #***********************************************************************;
 #  4a. Feature importance using F-test and MI (a total of 22 features)  ;

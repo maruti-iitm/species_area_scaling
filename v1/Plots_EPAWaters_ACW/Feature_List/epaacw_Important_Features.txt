@@ -23,3 +23,27 @@
 #       11  --> 0.393 0.416 DamDensWs
 #       16  --> 0.395 0.426 SuperfundDensWs
 #       17  --> 0.421 0.611 TRIDensWs
+
+
+'PctNonCarbResidWs',
+'PctUrbMd2011Ws',
+'DamNrmStorM3Ws',
+'DRNAREA',
+'DamNIDStorM3Ws',
+'PctImp2006Ws',
+'NABD_NrmStorM3Ws',
+'NABD_NIDStorM3Ws',
+'PctFrstLoss2009Ws',
+'PctUrbHi2011Ws',
+'PctUrbLo2011Ws',
+'Tmax8110Ws',
+'PctNonAgIntrodManagVegWs',
+'Tmean8110Ws',
+'MineDensWs',
+'NABD_DensWs',
+'NPDESDensWs',
+'PctOw2006Ws',
+'PctUrbOp2011Ws',
+'DamDensWs',
+'SuperfundDensWs',
+'TRIDensWs'

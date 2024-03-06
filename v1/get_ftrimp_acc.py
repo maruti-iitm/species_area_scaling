@@ -116,9 +116,9 @@ for i in range(0,len(correlated_count_list)):
         '{0:.3g}'.format(scorr_list[ascend_argsort_pcorr][i]), \
         correlated_ftrs_list[i])
 
-#************************************************;
-#  3. Best epaacc correlation coefficients list  ;
-#************************************************;
+#*************************************************;
+#  3a. Best epaacc correlation coefficients list  ;
+#*************************************************;
 epaacc_index_list = [34, 52, 54, 82, 92, 97, 114, 115, 119, 122, 126, 131] #12
 epaacc_ftrs_list  = ['Percent forest cover loss - PctFrstLoss', \
                         'Mean hydraulic conductivity in catchment -- HydrlCondCat', \
@@ -137,6 +137,12 @@ epac_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 12)
 #
 X                 = copy.deepcopy(epac_arr) #(54, 12)
 y                 = copy.deepcopy(sr_arr) #(54, 10)
+
+#**************************************************************;
+#  3b. Best epaacc correlation coefficients column names list  ;
+#**************************************************************;
+column_names = df_acc.columns.tolist()
+reduced_col_names_list = [column_names[i] for i in epaacc_index_list]
 
 #***********************************************************************;
 #  4a. Feature importance using F-test and MI (a total of 12 features)  ;
