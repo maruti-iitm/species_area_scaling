@@ -187,6 +187,7 @@ for j in range(0,12): #Extrinsic features 0 to 12
     ax.legend(bbox_to_anchor=(1.04, 1.0), loc = 'upper left')
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/logSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/SVG_figs/logSR_' + str(j) + '_' + imp_ftrs_list[j] + '.svg')
     plt.close(fig)
 
 #********************************************************;
@@ -216,6 +217,7 @@ for j in range(0,12): #Extrinsic features 0 to 12
     #ax.legend(bbox_to_anchor=(1.04, 1.0), loc = 'upper left')
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/SR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/SVG_figs/SR_' + str(j) + '_' + imp_ftrs_list[j] + '.svg')
     plt.close(fig)
 
 #*****************************************************************;
@@ -249,6 +251,7 @@ for j in range(0,12): #Extrinsic features 0 to 12
     ax.legend(bbox_to_anchor=(1.05, 1.0), loc = 'upper left')
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/LegendSR_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/SVG_figs/LegendSR_' + str(j) + '_' + imp_ftrs_list[j] + '.svg')
     plt.close(fig)
 
 df_b_arr    = pd.DataFrame(b_arr, index = comp_list, columns = imp_ftrs_list) #b
@@ -291,6 +294,7 @@ for j in range(0,12): #Extrinsic features 0 to 12
     ax.bar(comp_list, norm_se_list[:,j], color = color_list)
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/Bar_NormExp_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/SVG_figs/Bar_NormExp_' + str(j) + '_' + imp_ftrs_list[j] + '.svg')
     plt.close(fig)
     #
     legend_properties = {'weight':'bold'}
@@ -302,6 +306,7 @@ for j in range(0,12): #Extrinsic features 0 to 12
     ax.bar(comp_list, norm_cvalue_list[:,j], color = color_list)
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/Bar_NormCval_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/SVG_figs/Bar_NormCval_' + str(j) + '_' + imp_ftrs_list[j] + '.svg')
     plt.close(fig)    
 
 #******************************************************************************;
@@ -317,6 +322,7 @@ for j in range(0,12): #Extrinsic features 0 to 12
     ax.bar(comp_list, se_list[:,j], color = color_list)
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/Bar_RawExp_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/SVG_figs/Bar_RawExp_' + str(j) + '_' + imp_ftrs_list[j] + '.svg')
     plt.close(fig)
     #
     legend_properties = {'weight':'bold'}
@@ -328,4 +334,5 @@ for j in range(0,12): #Extrinsic features 0 to 12
     ax.bar(comp_list, cvalue_list[:,j], color = color_list)
     fig.tight_layout()
     plt.savefig(path + 'Plots_EPAWaters_ACC/Scaling_Laws/Bar_RawCval_' + str(j) + '_' + imp_ftrs_list[j] + '.png')
+    plt.savefig(path + 'Plots_EPAWaters_ACC/SVG_figs/Bar_RawCval_' + str(j) + '_' + imp_ftrs_list[j] + '.svg')
     plt.close(fig) 
