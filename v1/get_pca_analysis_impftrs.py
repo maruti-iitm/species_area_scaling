@@ -195,6 +195,7 @@ ax.set_ylabel('PC 2 (%.2f%%)' % (pca_samples.explained_variance_ratio_[1]*100))
 ax.scatter(X_pca_ss[:,0], X_pca_ss[:,1], c = 'k', s = 25, edgecolor = ['none'])
 fig.tight_layout()
 plt.savefig(path + 'PCA_all/PCA_samples_all_table1.png', dpi = 300)
+plt.savefig(path + 'PCA_all/SVG_figs/PCA_samples_all_table1.svg')
 plt.close(fig)
 
 #********************************************************************************************;
@@ -220,4 +221,5 @@ for feature, arrow in zip(features_list, arrows_list):
                 ha='center', va='center', fontsize = 'xx-small')
 fig.tight_layout()
 plt.savefig(path + 'PCA_all/PCA_samples_all_loadings_impftrs.png', dpi = 300)
+plt.savefig(path + 'PCA_all/SVG_figs/PCA_samples_all_loadings_impftrs.svg')
 plt.close(fig)

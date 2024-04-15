@@ -250,6 +250,7 @@ ax.plot([], [], color = 'm', marker = 'o', linestyle = 'None', label = 'EPAW-W')
 ax.legend(loc = 'upper left')
 fig.tight_layout()
 plt.savefig(path + 'PCA_all/PCA_ftrs_all.png', dpi = 300)
+plt.savefig(path + 'PCA_all/SVG_figs/PCA_ftrs_all.svg')
 plt.close(fig)
 
 #********************************************************************************************;
@@ -265,6 +266,7 @@ ax.set_ylabel('PC 2 (%.2f%%)' % (pca_samples.explained_variance_ratio_[1]*100))
 ax.scatter(X_pca_ss[:,0], X_pca_ss[:,1], c = 'k', s = 25, edgecolor = ['none'])
 fig.tight_layout()
 plt.savefig(path + 'PCA_all/PCA_samples_all.png', dpi = 300)
+plt.savefig(path + 'PCA_all/SVG_figs/PCA_samples_all.svg')
 plt.close(fig)
 
 #********************************************************************************************;
@@ -293,4 +295,5 @@ for k in list(range(0,num_ftrs,stride)):
                  ha='center', va='center', fontsize = 'xx-small')
     fig.tight_layout()
     plt.savefig(path + 'PCA_all/PCA_samples_all_loadings_' + str(k) + '.png', dpi = 300)
+    plt.savefig(path + 'PCA_all/SVG_figs/PCA_samples_all_loadings_' + str(k) + '.svg')
     plt.close(fig)
