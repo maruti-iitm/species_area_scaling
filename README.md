@@ -14,7 +14,7 @@ Our aim is to analyze how species richness scales with the habitat features. Thi
 ### Workflow diagram:
 ![Workflow](https://github.com/maruti-iitm/species_area_scaling/blob/main/Notes/Graphics/EMSL_0555_WHONDRS_TOC-02.png)
 
-### Features
+### Repo contents:
 
 - **Data processing**: Scripts for preprocessing and cleaning various environmental datasets.
 - **Analysis methods**: Implementation of data-driven and feature importance models to assess species-metric-scaling relationships.
@@ -22,8 +22,49 @@ Our aim is to analyze how species richness scales with the habitat features. Thi
 - **Code documentation**: Detailed doc strings to help users replicate and extend the analyses.
 - **Preliminary Google Colab notebook**: https://colab.research.google.com/drive/10wx9QCxRWWmY2Xi4WMAR-YZgvYbL_sty#scrollTo=0RGUt-SrhGUc
 
+### Datasets
+
+The research uses several datasets, including:
+
+- **WHONDRS**: Data attribures such as water temperature, dissolved oxygen, and pH measurements.
+- **StreamStats**: Hydrological and geographical data.
+- **HydroSheds**: Hydrological data on river networks and watersheds.
+- **EPAWaters**: Environmental Protection Agency catchment and watershed characteristics.
+
+Refer to the `Data/` and `v1/Inputs_Outputs_v4/` directories.
+
+### Methods
+
+The research employs various statistical and machine learning methods to analyze species-richness-scaling relationships, including:
+
+- F-test
+- Mutual Information (MI)
+- Random Forest (RF)
+- SHAPley values
+- Pearson and Spearman correlations
+
+Each method's implementation is documented in the `v1/*.py` directory.
+
+### Results
+
+Results of the analyses are stored in the `v1/Plots_*/` and `v1/PCA_all/` directories, including:
+
+- Feature importance scores
+- Model performance metrics
+- Visualizations of species-richness-scaling relationships
+
+Refer to the `Slides/README.md` file for a summary of the findings.
 
 ## Contributing
+
+To get started with the research, clone the repository and install the required dependencies. 
+All the Python scripts are in `v1/get_*.py`
+
+```
+git clone https://github.com/maruti-iitm/species_area_scaling.git
+cd species_area_scaling
+pip install -r requirements.txt
+```
 
 We welcome contributions from the community! Please follow these steps to contribute:
 
