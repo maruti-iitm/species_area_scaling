@@ -14,7 +14,13 @@ Our aim is to analyze how species richness scales with the habitat features. Thi
 ### Workflow diagram:
 ![Workflow](https://github.com/maruti-iitm/species_area_scaling/blob/main/Notes/Graphics/EMSL_0555_WHONDRS_TOC-02.png)
 
+### Features
 
+- **Data processing**: Scripts for preprocessing and cleaning various environmental datasets.
+- **Analysis methods**: Implementation of data-driven and feature importance models to assess species-metric-scaling relationships.
+- **Visualization**: Graphical representations of the analysis results usign `matplotlib`.
+- **Code documentation**: Detailed doc strings to help users replicate and extend the analyses.
+- **Preliminary Google Colab notebook**: https://colab.research.google.com/drive/10wx9QCxRWWmY2Xi4WMAR-YZgvYbL_sty#scrollTo=0RGUt-SrhGUc
 
 
 ## Contributing
