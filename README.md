@@ -28,6 +28,17 @@ We welcome contributions from the community! Please follow these steps to contri
 5. Push to the branch (`git push origin feature-user-branch`).
 6. Open a pull request.
 
+**Contact** 
+
+If you have questions or need help getting started, contact Maruti Mudunuru (<maruti@pnnl.gov>).
+
+**Copyright guidelines**
+
+To maintain compatibility with the project's overall licensing, please adhere to the following:
+
+* **Datasets:** Do not include datasets with restricted licenses that prohibit free use or modification, as they may conflict with the project's MIT license.
+* **Code Snippets:** Avoid using Python/R code snippets with restricted licenses that prevent free use or modification.
+
 ### Directory structure for contribution
 
 ```
