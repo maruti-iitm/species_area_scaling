@@ -67,7 +67,7 @@ Our aim is to analyze how species richness scales with the habitat features. Thi
 │             ├── hydrosheds_vs_SR_v7.pptx
 │             ├── hydrosheds_vs_SR_v8.pptx
 │             ├── hydrosheds_vs_SR_v9.pptx
-│             ├── requirements.txt
+├── requirements.txt
 └── v1
     ├── 1_ATLAS_Docs
     ├── 2_EPAWaters_Docs
