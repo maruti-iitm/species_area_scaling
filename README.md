@@ -183,7 +183,7 @@ pygount --format=summary .
 | Markdown     |       4 |  0.4 |     82 | 38.5 |        0 |  0.0 |
 | __unknown__  |     438 | 46.0 |      0 |  0.0 |        0 |  0.0 |
 | __binary__   |     485 | 50.9 |      0 |  0.0 |        0 |  0.0 |
-| **Sum**      |     952 |100.0 |   4368 | 63.9 |     1948 | 28.5 |
+| **Sum**      |     **952** |**100.0** |   **4368** | **63.9** |     **1948** | **28.5** |
 
 ## Data availability
 Additional information, including summarized data files, metadata, and data from the figures and supplementary information that is not available in this GitHub repository, can be accessed publicly in an open Zenodo data repository at the following link: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12789205.svg)](https://doi.org/10.5281/zenodo.12789205)
