@@ -173,7 +173,7 @@ tree -L 2 . >> tree.txt
 ```
 
 ## Data availability
-Additional information, including summarized data files, metadata, and data from the figures and supplementary information that is not available in this GitHub repository, can be accessed publicly in an open Zenodo data repository at the following link: [![DOI](https://doi.org/10.5281/zenodo.12789205)](https://doi.org/10.5281/zenodo.12789205)
+Additional information, including summarized data files, metadata, and data from the figures and supplementary information that is not available in this GitHub repository, can be accessed publicly in an open Zenodo data repository at the following link: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12789205.svg)](https://doi.org/10.5281/zenodo.12789205)
 
 ## Acknowledgements
 We acknowledge the work of the WHONDRS team from Pacific Northwest National Laboratory for their effort developing the WHONDRS program and providing the datasets. MKM’s research was supported by the Environmental Molecular Sciences Laboratory, a DOE Office of Science User Facility sponsored by the Biological and Environmental Research program under Contract No. DE-AC05-76RL01830 (Award DOIs: 10.46936/intm.proj.2022.60592/60008643; 10.46936/intm.proj.2023.60904/60008965). MN’s research was supported by the Watershed Function Science Focus Area funded by the U.S. Department of Energy, Office of Science, Office of Biological and Environmental Research under Award Number DE-AC02-05CH1123. The authors acknowledge the contributions of Nathan Johnson at PNNL’s Creative Services, who developed the conceptual graphics in this paper.
