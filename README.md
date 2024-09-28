@@ -176,6 +176,18 @@ tree -L 2 . >> tree.txt
 pygount --format=summary .
 ```
 
+or
+
+```
+find . -name '*.py' | xargs wc -l
+```
+
+or 
+
+```
+cloc .
+```
+
 | Language     |   Files |   % |   Code |   % |   Comment |   % |
 |--------------|--------:|----:|-------:|----:|---------:|----:|
 | Python       |      19 |  2.0 |   4177 | 64.2 |     1948 | 29.9 |
