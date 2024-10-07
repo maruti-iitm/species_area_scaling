@@ -10,7 +10,6 @@ Our aim is to analyze how species richness scales with the habitat features. Thi
 
 ![Concept](https://github.com/maruti-iitm/species_area_scaling/blob/main/Notes/Graphics/EMSL_0555_WHONDRS_TOC-03.png)
 
-
 ### Workflow diagram:
 ![Workflow](https://github.com/maruti-iitm/species_area_scaling/blob/main/Notes/Graphics/EMSL_0555_WHONDRS_TOC-02.png)
 
