@@ -61,6 +61,8 @@ sd_arr            = df_sd.values #(54, 10) #shannon diversity
 wdrs_arr          = df_wdrs.fillna(method="ffill").values[:,[6,11]] #(54, 2) #ftrs and fill NaNs for SW_Temp_degC
 wdrs_id_list      = [6, 11] #wdrs ids that are non-NaNs
 wdrs_ftrs_id_list = [wdrs_ftrs_list[i] for i in wdrs_id_list] #2
+#print(np.min(wdrs_arr, axis=0))
+#print(np.max(wdrs_arr, axis=0))
 
 #**********************************************;
 #  1b. Set paths for .csv files (StreamStats)  ;
@@ -73,6 +75,8 @@ strm_ftrs_list    = df_strmstats.columns.to_list() #8
 strm_arr          = df_strmstats.values[:,[1,2]] #(54, 2) #ftrs
 strm_id_list      = [1, 2] #strm ids that are non-NaNs
 strm_ftrs_id_list = [strm_ftrs_list[i] for i in strm_id_list] #2
+#print(np.min(strm_arr, axis=0))
+#print(np.max(strm_arr, axis=0))
 
 #*********************************************;
 #  1c. Set paths for .csv files (HYDROSHEDS)  ;
@@ -89,6 +93,8 @@ hydrosheds_ftrs_list  = ['Natural discharge - dis_m3_pmn', 'Air temp - tmp_dc_s0
                             'Potential ET - pet_mm_s04', 'Actual ET - aet_mm_s04'] #4
 #
 hs_arr                = copy.deepcopy(huc12_arr[:,hydrosheds_index_list]) #(54, 4)
+#print(np.min(hs_arr, axis=0))
+#print(np.max(hs_arr, axis=0))
 
 #******************************************;
 #  1d. Set paths for .csv files (EPA-ACC)  ;
@@ -106,6 +112,8 @@ epaacc_index_list = [131] #1
 epaacc_ftrs_list  = ['Mean summer stream temperature - MSST'] #1
 #
 epac_arr          = copy.deepcopy(acc_arr[:,epaacc_index_list]) #(54, 1)
+#print(np.min(epac_arr, axis=0))
+#print(np.max(epac_arr, axis=0))
 
 #******************************************;
 #  1e. Set paths for .csv files (EPA-ACW)  ;
@@ -123,6 +131,8 @@ epaacw_index_list = [54, 123] #2
 epaacw_ftrs_list  = ['PctImpWs', 'TmeanWs'] #2
 #
 epaw_arr          = copy.deepcopy(acw_arr[:,epaacw_index_list]) #(54, 2)
+#print(np.min(epaw_arr, axis=0))
+#print(np.max(epaw_arr, axis=0))
 
 #*******************************************;
 #  2a. Construct the full data matrix (raw) ;
