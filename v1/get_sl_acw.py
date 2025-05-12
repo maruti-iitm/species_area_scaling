@@ -50,6 +50,7 @@ from scipy.stats import linregress
 from scipy.optimize import curve_fit
 import scipy.odr
 import scipy.stats
+from sklearn.metrics import r2_score
 #
 np.set_printoptions(precision=2)
 

@@ -1,0 +1,20 @@
+#   WHONDRS features
+#       'DS_Water.Column.Height_cm'
+#       'SW_Temp_degC'            
+#
+#   StreamStats features
+#       'lat'     
+#       'DRNAREA'
+#
+#   HydroSheds features
+#       'Natural discharge - dis_m3_pmn'
+#       'Air temp - tmp_dc_s05'         
+#       'Potential ET - pet_mm_s04'      
+#       'Actual ET - aet_mm_s04'        
+#
+#   EPAW-Catchment features
+#       'Mean summer stream temperature - MSST'
+#
+#   EPAW-Watershed features
+#       'PctImpWs'
+#       'TmeanWs'

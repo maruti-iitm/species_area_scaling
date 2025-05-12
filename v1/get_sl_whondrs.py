@@ -26,6 +26,7 @@ from scipy.stats import linregress
 from scipy.optimize import curve_fit
 import scipy.odr
 import scipy.stats
+from sklearn.metrics import r2_score
 #
 np.set_printoptions(precision=2)
 
@@ -111,6 +112,7 @@ logz_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
 #
 b_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
 z_list    = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
+r2_score_list = np.zeros((len(comp_list), 5), dtype = float) #(10,5)
 #
 for j in range(0,5): #Top-5 features
     for i in range(0,len(comp_list)): #Compounds i = 0 to 10
@@ -120,16 +122,21 @@ for j in range(0,5): #Top-5 features
         r_value_sr, \
         p_value_sr,\
         std_err_sr  = linregress(np.log10(wdrs_ftimp_arr[ind,j] + 1e-8), np.log(sr_arr[ind,i]+ 1e-8))
+        y_pred_sr = np.asarray([c_sr + m_sr*xi for xi in np.log10(wdrs_ftimp_arr[ind,j] + 1e-8)])
+        y_true_sr = copy.deepcopy(np.log(sr_arr[ind,i]+ 1e-8))
+        r2_score_sr = r2_score(y_true_sr, y_pred_sr)
         print('i, j, Comp name, Extrinsic feature, logz_sr, logb_sr, z_sr, b_sr = ', \
                 i, j, comp_list[i], imp_ftrs_list[j], \
                 '{0:.3g}'.format(m_sr), '{0:.3g}'.format(c_sr), \
-                '{0:.3g}'.format(10**m_sr), '{0:.3g}'.format(10**c_sr))
+                '{0:.3g}'.format(10**m_sr), '{0:.3g}'.format(10**c_sr), \
+                '{0:.3g}'.format(r2_score_sr))
         #
         logb_list[i,j] = c_sr
         logz_list[i,j] = m_sr
         #
         b_list[i,j]    = 10**c_sr
         z_list[i,j]    = 10**m_sr
+        r2_score_list[i,j] = r2_score_sr
 
 #********************************************************************;
 #  3a. log(SR) vs. log10(extrinsic factors) for 9 compounds and sum  ;
@@ -205,6 +212,7 @@ b_arr    = np.zeros((len(comp_list),5), dtype = float) #(10,5)
 se_arr   = np.zeros((len(comp_list),5), dtype = float) #(10,5)
 pv_b_arr = np.zeros((len(comp_list),5), dtype = float) #(10,5)
 pv_z_arr = np.zeros((len(comp_list),5), dtype = float) #(10,5)
+r2_arr   = copy.deepcopy(r2_score_list) #(10,5)
 #
 for j in range(0,5): #Extrinsic features 0 to 4
     legend_properties = {'weight':'bold'}
@@ -236,11 +244,13 @@ df_b_arr    = pd.DataFrame(b_arr, index = comp_list, columns = imp_ftrs_list) #b
 df_se_arr   = pd.DataFrame(se_arr, index = comp_list, columns = imp_ftrs_list) #z
 df_pv_b_arr = pd.DataFrame(pv_b_arr, index = comp_list, columns = imp_ftrs_list) #p-value for b
 df_pv_z_arr = pd.DataFrame(pv_z_arr, index = comp_list, columns = imp_ftrs_list) #p-value for z
+df_r2_arr   = pd.DataFrame(r2_arr, index = comp_list, columns = imp_ftrs_list) #r2-score values
 #
 df_b_arr.to_csv('Plots_WHONDRS/Scaling_Laws/b_array.csv')
 df_se_arr.to_csv('Plots_WHONDRS/Scaling_Laws/scaling_exponent_array.csv')
 df_pv_b_arr.to_csv('Plots_WHONDRS/Scaling_Laws/p-value_b_array.csv')
 df_pv_z_arr.to_csv('Plots_WHONDRS/Scaling_Laws/p-value_scaling_expoenent_array.csv')
+df_r2_arr.to_csv('Plots_WHONDRS/Scaling_Laws/r2_scores_array.csv')
 
 #*********************************************************************;
 #  4a. Raw and normalized exponents for 9 compounds and sum (labels)  ;
